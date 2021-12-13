@@ -1,0 +1,71 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "About Us";
+}
+
+<head>
+    @*--fontawesome css--*@
+    <link href="~/fontawesome/css/all.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-9 mx-auto">
+            <div class="card cards-top">
+                <img class="card-img-top" src="~/images/in-homepage-banner.png" alt="Card image cap">
+                <div class="card-body">
+                    <h3 class="card-title">About Us</h3>
+                    <p class="card-text">
+                        The mission of the Free Library of Kansas is to advance literacy, guide learning, and inspire curiosity. Its vision is to build an enlightened community devoted to lifelong learning.
+                        <br />
+                        If you have any questions or inquiries about the library's material or resources, please visit us at 300 SW 10th Avenue, Topeka KS.
+                    </p>
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-4 text-center">
+                            <h5 class="text-pos">Find and Follow Us</h5>
+                            <a href="https://www.facebook.com/statelibraryofkansas">
+                                <p class="links"><i class="fab fa-facebook-square"></i> Facebook</p>
+                            </a>
+                            <a href="https://twitter.com/LibraryofKS"><p class="links"><i class="fab fa-twitter"></i> Twitter</p></a>
+                        </div>
+                        <div class="col-sm-4">
+                            <h5 class="text-pos">Visiting Us</h5>
+                            <p>
+                                The State Library of Kansas is open from 8 a.m. to 5 p.m., Monday-Friday,and is closed on major holidays.
+                            </p>
+                            <p>
+                                Capitol Building
+                                Room 312-N
+                                300 SW 10th Avenue
+                                Topeka KS, 66612-1593
+                            </p>
+                        </div>
+                        <div class="col-sm-4 text-center">
+                            <h5 class="text-pos">General Information</h5>
+                            <br>
+                            Telephone number: 785-296-3296&nbsp;<br>
+                            <a href="mailto:infodesk@ks.gov" target="_self" class="Hyperlink">Email Reference Department</a><br>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <br />
+                        <iframe scrolling="no" marginheight="0" marginwidth="0" id="gmap_canvas" class="gmap" src="https://maps.google.com/maps?width=570&amp;height=450&amp;hl=en&amp;q=300%20SW%2010th%20Avenue%20Topeka+(Library%20Map)&amp;t=&amp;z=12&amp;ie=UTF8&amp;iwloc=B&amp;output=embed" width="570" height="450" frameborder="0"></iframe>
+                        <a href='https://add-map.org/'>add google maps to my website</a>
+                        <script type='text/javascript' src='https://embedmaps.com/google-maps-authorization/script.js?id=43e4bbcf55ac8de12a138543a32adf794fe6b5a6'></script>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-pad">
+                <a class="btn btn-outline-info btn-sm fa-pull-left" type="button" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fa fa-arrow-left"></i> Back to Home
+                </a>
+            </div>
+
+        </div>
+    </div>
+</body>

@@ -1,0 +1,95 @@
+﻿@model LibraryMSystem.Data.Models.LibraryBranch
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<div class="page-width">
+<h1>Edit</h1>
+
+<h4>LibraryBranch</h4>
+<hr />
+<form asp-action="Edit" id="profile-form" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-auto">
+                    <label asp-for="Telephone" class="control-label"></label>
+                    <input asp-for="Telephone" class="form-control" />
+                    <span asp-validation-for="Telephone" class="text-danger"></span>
+                </div>
+                <div class="form-group col-auto">
+                    <label asp-for="OpenDate" class="control-label"></label>
+                    <input asp-for="OpenDate" class="form-control" />
+                    <span asp-validation-for="OpenDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="3" ></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-row">
+            <div class="form-group col-auto">
+                <label asp-for="NumberOfPatrons" class="control-label"></label>
+                <input asp-for="NumberOfPatrons" class="form-control" />
+                <span asp-validation-for="NumberOfPatrons" class="text-danger"></span>
+            </div>
+            <div class="form-group col-auto">
+                <label asp-for="NumberOfAssets" class="control-label"></label>
+                <input asp-for="NumberOfAssets" class="form-control" />
+                <span asp-validation-for="NumberOfAssets" class="text-danger"></span>
+            </div>
+            <div class="form-group col-auto">
+                <label asp-for="TotalAssetValue" class="control-label"></label>
+                <input asp-for="TotalAssetValue" class="form-control" />
+                <span asp-validation-for="TotalAssetValue" class="text-danger"></span>
+            </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+        <div class="col-md-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="BranchImage" style="width: 100%;"></label>
+            @if (Model.BranchImage != null)
+            {
+                <img id="branchImage" style="width:350px;height:350px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(Model.BranchImage))">
+            }
+            else
+            {
+                <img id="branchImage" style="width:350px;height:350px; object-fit:cover" src="">
+            }
+            <input type="file"
+                    accept=".png,.jpg,.jpeg,.gif,.tif"
+                    asp-for="BranchImage"
+                    class="form-control"
+                    style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                    onchange="document.getElementById('branchImage').src = window.URL.createObjectURL(this.files[0])" />
+            <span asp-validation-for="BranchImage" class="text-danger"></span>
+        </div>
+      </div>
+   </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

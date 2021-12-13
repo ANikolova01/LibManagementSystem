@@ -1,0 +1,169 @@
+﻿@model LibraryMSystem.Data.Models.Book
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Book</h4>
+<hr />
+<form asp-action="Edit" id="book-edit" method="post" enctype="multipart/form-data">
+<div class="row">
+    <div class="col-md-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+        <div class="form-row">
+            <div class="form-group col-auto">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group col-auto">
+                <label asp-for="Author" class="control-label"></label>
+                <input asp-for="Author" class="form-control" />
+                <span asp-validation-for="Author" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-auto">
+                <label asp-for="ISBN" class="control-label"></label>
+                <input asp-for="ISBN" class="form-control" />
+                <span asp-validation-for="ISBN" class="text-danger"></span>
+            </div>
+            <div class="form-group col-auto">
+                <label asp-for="PublicationYear" class="control-label"></label>
+                <input asp-for="PublicationYear" class="form-control" />
+                <span asp-validation-for="PublicationYear" class="text-danger"></span>
+            </div>
+       </div>
+       <div class="form-row">
+            <div class="form-group col-auto">
+                <label asp-for="Edition" class="control-label"></label>
+                <input asp-for="Edition" class="form-control" />
+                <span asp-validation-for="Edition" class="text-danger"></span>
+            </div>
+            <div class="form-group col-auto">
+                <label asp-for="Publisher" class="control-label"></label>
+                <input asp-for="Publisher" class="form-control" />
+                <span asp-validation-for="Publisher" class="text-danger"></span>
+            </div>
+       </div>
+            <div class="form-row">
+                <div class="form-group col-auto">
+                    <label asp-for="DeweyIndex" class="control-label"></label>
+                    <input asp-for="DeweyIndex" class="form-control" />
+                    <span asp-validation-for="DeweyIndex" class="text-danger"></span>
+                </div>
+                <div class="form-group col-auto">
+                    <label asp-for="Language" class="control-label"></label>
+                    <input asp-for="Language" class="form-control" />
+                    <span asp-validation-for="Language" class="text-danger"></span>
+                </div>
+                <div class="form-group col-auto">
+                <label asp-for="Genre" class="control-label"></label>
+                <select asp-for="Genre" multiple class="form-control" id="genreSelect1">
+                    <option>Literary Fiction</option>
+                    <option>Mystery</option>
+                    <option>Thriller</option>
+                    <option>Horror</option>
+                    <option>Historical</option>
+                    <option>Romance</option>
+                    <option>Western</option>
+                    <option>Buildungsroman</option>
+                    <option>Speculative Fiction</option>
+                    <option>Science Fiction</option>
+                    <option>Fantasy</option>
+                    <option>Magical Realism</option>
+                    <option>Dystopian</option>
+                    <option>Realist Literature</option>
+                </select>
+                <span asp-validation-for="Genre" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Summary" class="control-label"></label>
+                <textarea asp-for="Summary" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Summary" class="text-danger"></span>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-auto">
+                    <label asp-for="Cost" class="control-label"></label>
+                    <input asp-for="Cost" class="form-control" />
+                    <span asp-validation-for="Cost" class="text-danger"></span>
+                </div>
+                <div class="form-group col-auto">
+                    <label asp-for="NoOfPages_LengthTime" class="control-label"></label>
+                    <input asp-for="NoOfPages_LengthTime" class="form-control" />
+                    <span asp-validation-for="NoOfPages_LengthTime" class="text-danger"></span>
+                </div>
+           </div>
+           <div class="form-row">
+                <div class="form-group col-auto">
+                    <label asp-for="NumberOfCopies" class="control-label"></label>
+                    <input asp-for="NumberOfCopies" class="form-control" />
+                    <span asp-validation-for="NumberOfCopies" class="text-danger"></span>
+                </div>
+                <div class="form-group col-auto">
+                    <label asp-for="CopiesAvailable" class="control-label"></label>
+                    <input asp-for="CopiesAvailable" class="form-control" />
+                    <span asp-validation-for="CopiesAvailable" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-auto">
+                    <label asp-for="AvailabilityStatus.Description" class="control-label"></label>
+                    <select asp-for="AvailabilityStatus.Description" class="form-control" id="availabilityStatusSelect1">
+                        <option>Lost</option>
+                        <option>Good Condition</option>
+                        <option>Destroyed</option>
+                        <option>Unknown</option>
+                    </select>
+                    <span asp-validation-for="AvailabilityStatus.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group col-auto">
+                    <label asp-for="Location.Name" class="control-label">Name of Library Branch</label>
+                    <input asp-for="Location.Name" class="form-control" />
+                    <span asp-validation-for="Location.Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <input asp-for="Type" class="form-control" />
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="BookImage" style="width: 100%;"></label>
+               @if (Model.BookImage != null)
+                {
+                    <img id="bookImage" style="width:350px;height:350px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(Model.BookImage))">
+                }
+                else
+                {
+                    <img id="bookImage" style="width:350px;height:350px; object-fit:cover" src="">
+                }
+                <input type="file"
+                       accept=".png,.jpg,.jpeg,.gif,.tif"
+                       asp-for="BookImage"
+                       class="form-control"
+                       style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                       onchange="document.getElementById('bookImage').src = window.URL.createObjectURL(this.files[0])" />
+                <span asp-validation-for="BookImage" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

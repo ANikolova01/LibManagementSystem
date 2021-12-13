@@ -1,0 +1,234 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.container {
+    /*remove the container default padding attribute*/
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    /*increase width as per your need*/
+    max-width: 100% !important;
+}
+
+.head-container {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+.container-image {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    max-width: 100% !important;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+#header {
+    /* background: #9FD983;*/
+    background-image: linear-gradient(#9FD983, #FFFFFF);
+}
+
+.cards-top {
+    margin-top: 20px;
+}
+
+.button-pad {
+    padding-bottom: 50px;
+    padding-top: 20px;
+}
+
+.text-pos {
+    text-align: center;
+}
+
+.icon-pos2 {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100px;
+}
+
+.links {
+    text-align: center;
+    color: #024064;
+}
+
+    .links:hover {
+        color: #0094ff;
+    }
+
+a:hover {
+    text-decoration: none;
+}
+
+.gmap {
+    visibility: visible !important;
+}
+
+.icon-pos {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 150px;
+}
+
+.preface {
+    text-shadow: 2px 2px 3px #FED26C;
+    color: #D47E00;
+    font-weight: bold;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.descriptions {
+    color: #002438;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.links {
+    text-align: center;
+    color: #024064;
+}
+
+    .links:hover {
+        color: #0094ff;
+    }
+
+.col-center {
+    justify-content: center;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; /* Vertically center the text there */
+}
+
+.branch-details {
+    border-style: groove;
+    border-color: #ffe58f;
+    /*    background-color: #fff1d9;
+*/
+}
+
+dt.branch-details-desc {
+    border-bottom-style: dashed;
+    border-color: #ffe58f;
+}
+
+dd.branch-details-info {
+    border: 1px solid grey;
+    border-radius: 5px;
+}
+
+.branch-details-img {
+    align-items: center;
+    display: flex;
+}
+
+.genre-container {
+    border-radius: 3px;
+    border: solid #dee2e6;
+    padding: 1rem;
+    border-width: 1px;
+}
+
+.book-details {
+    border-style: groove;
+    border-color: #8fa5ff;
+    /*    background-color: #fff1d9;
+*/
+}
+
+dt.book-details-desc {
+    border-bottom-style: dashed;
+    border-color: #8fa5ff;
+}
+
+dd.book-details-info {
+    border: 1px solid grey;
+    border-radius: 5px;
+}
+
+.book-details-img {
+    align-items: center;
+    display: flex;
+}
+
+.page-width {
+    width: 80%;
+    margin: auto;
+}
+
+.h1 {
+    margin-bottom: 20px;
+    margin-top: 20px !important;
+}
+
+.create-new-btn {
+    margin-bottom: 20px;
+    margin-top: 10px;
+}

@@ -1,0 +1,38 @@
+﻿@model LibraryMSystem.Data.Models.Checkout
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Checkout</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CheckedOutSince" class="control-label"></label>
+                <input asp-for="CheckedOutSince" class="form-control" />
+                <span asp-validation-for="CheckedOutSince" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckedOutUntil" class="control-label"></label>
+                <input asp-for="CheckedOutUntil" class="form-control" />
+                <span asp-validation-for="CheckedOutUntil" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,105 @@
+﻿@model IEnumerable<LibraryMSystem.Data.Models.Book>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="page-width">
+<h1 class="title-place">Books Catalog</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-outline-success create-new-btn">Create New</a>
+</p>
+<div id="books">
+<div id="books-table"> 
+    <table class="ui celled table compact table-striped table-hover" id="booksIndexTable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.BookImage)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Author)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ISBN)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PublicationYear)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Edition)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Publisher)
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <th>
+                    <img src="data:image;base64,@System.Convert.ToBase64String(item.BookImage)" width="80" height="110"/>  
+                    @* @Html.DisplayFor(model => model.Book.BookImage) *@
+                </th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISBN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PublicationYear)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Edition)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Publisher)
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm" role="group">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
+                </div>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+</div>
+</div>
+
+</div>
+@section Styles {
+    <link href="https://cdn.datatables.net/1.11.3/css/dataTables.semanticui.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet" type="text/css" />
+}
+
+@section Scripts {
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/dataTables.semanticui.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#booksIndexTable').DataTable(                
+                {"columnDefs": [
+                { "orderable": false, "targets": [0, 7] },
+                { "orderable": true, "targets": [1, 2, 3, 4, 5, 6] }
+            ]});
+        });
+
+    </script>
+}
