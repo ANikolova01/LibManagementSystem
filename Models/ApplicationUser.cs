@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
-using LibraryMSystem.Data.Models;
+using LibraryManagementSystem.Models;
 
 namespace LibraryManagementSystem.Models
 {

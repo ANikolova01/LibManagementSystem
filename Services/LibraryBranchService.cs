@@ -1,7 +1,7 @@
 ﻿using LibraryManagementSystem.Interfaces;
 using LibraryManagementSystem.Data;
 using System.Threading.Tasks;
-using LibraryMSystem.Data.Models;
+using LibraryManagementSystem.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Collections.Generic;

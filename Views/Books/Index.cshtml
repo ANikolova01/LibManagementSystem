@@ -1,9 +1,9 @@
-﻿@model IEnumerable<LibraryMSystem.Data.Models.Book>
+﻿@model IEnumerable<LibraryManagementSystem.Models.Book>
 
 @{
     ViewData["Title"] = "Index";
 }
-
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <div class="page-width">
 <h1 class="title-place">Books Catalog</h1>
 
@@ -12,7 +12,7 @@
 </p>
 <div id="books">
 <div id="books-table"> 
-    <table class="ui celled table compact table-striped table-hover" id="booksIndexTable">
+    <table class="table" id="booksIndexTable">
         <thead>
             <tr>
                 <th>
@@ -83,6 +83,7 @@
 @section Styles {
     <link href="https://cdn.datatables.net/1.11.3/css/dataTables.semanticui.min.css" rel="stylesheet" type="text/css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet" type="text/css" />
+
 }
 
 @section Scripts {

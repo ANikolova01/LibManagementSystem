@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using LibraryMSystem.Data.Models;
+using LibraryManagementSystem.Models;
 
 
 namespace LibraryManagementSystem.Interfaces

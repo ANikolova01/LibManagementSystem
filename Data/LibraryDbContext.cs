@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using LibraryMSystem.Data.Models;
-using LibraryMSystem.Data;
+using LibraryManagementSystem.Models;
 
 namespace LibraryManagementSystem.Data
 {
