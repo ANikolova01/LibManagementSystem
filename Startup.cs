@@ -1,4 +1,7 @@
 using LibraryManagementSystem.Data;
+using LibraryManagementSystem.Interfaces;
+using LibraryManagementSystem.Models;
+using LibraryManagementSystem.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,15 +32,23 @@ namespace LibraryManagementSystem
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<LibraryDbContext>(options =>
-                options.UseSqlServer(
-        Configuration.GetConnectionString("DefaultConnection"))); //.AddScoped();
+            services.AddLogging(loggingBuilder => {
+                loggingBuilder.AddConsole()
+                    .AddFilter(DbLoggerCategory.Database.Command.Name, LogLevel.Information);
+                loggingBuilder.AddDebug();
+            });
+
+            services.AddDbContext<ApplicationDbContext>(options => 
+            options.UseSqlServer(
+                Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<LibraryDbContext>(options => {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")); //.AddScoped();
+                options.EnableSensitiveDataLogging(true); 
+            });
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
@@ -50,6 +62,8 @@ namespace LibraryManagementSystem
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.Strict;
             });
+
+            services.AddScoped<ILibraryBranchService, LibraryBranchService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

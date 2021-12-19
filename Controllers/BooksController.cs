@@ -9,16 +9,19 @@ using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Data;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using LibraryManagementSystem.Interfaces;
 
 namespace LibraryManagementSystem.Controllers
 {
     public class BooksController : Controller
     {
         private readonly LibraryDbContext _context;
+        private readonly ILibraryBranchService _libraryService;
 
-        public BooksController(LibraryDbContext context)
+        public BooksController(LibraryDbContext context, ILibraryBranchService libraryService)
         {
             _context = context;
+            _libraryService = libraryService;
         }
 
         // GET: Books
@@ -35,7 +38,7 @@ namespace LibraryManagementSystem.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books
+            var book = await _context.Books.Include(b => b.Location)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (book == null)
             {
@@ -56,7 +59,7 @@ namespace LibraryManagementSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Author,ISBN,PublicationYear,Edition,Publisher,DeweyIndex,Language,NoOfPages_LengthTime,Genre,Summary,BookImage,Cost,NumberOfCopies,CopiesAvailable,Type")] Book book)
+        public async Task<IActionResult> Create(Book book)
         {
             if (Request.Form.Files.Count > 0)
             {
@@ -67,19 +70,29 @@ namespace LibraryManagementSystem.Controllers
                     book.BookImage = dataStream.ToArray();
                 }
             }
-            if (ModelState.IsValid)
-            {
-                book.Id = Guid.NewGuid();
 
-                LibraryBranch branch = await _context.LibraryBranches.AsNoTracking().FirstOrDefaultAsync(b => b.Name == book.Location.Name);
+            book.Id = Guid.NewGuid();
 
-                book.Location = branch;
+            LibraryBranch branch = await _context.LibraryBranches.FirstOrDefaultAsync(b => b.Name == book.Location.Name);
 
-                _context.Add(book);
+
+            book.Location = branch;
+
+            Book bookModel = book;
+
+            var assetsValue = book.NumberOfCopies * book.Cost;
+
+            branch.TotalAssetValue = branch.TotalAssetValue + assetsValue;
+            branch.NumberOfAssets = branch.NumberOfAssets + 1;
+
+
+                _context.Add(bookModel);
+
+                _context.Update(branch);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(book);
+ //           }
+//            return View(book);
         }
 
         // GET: Books/Edit/5
@@ -90,7 +103,7 @@ namespace LibraryManagementSystem.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books.FindAsync(id);
+            var book = await _context.Books.Include(b => b.Location).FirstOrDefaultAsync(b => b.Id == id);
             if (book == null)
             {
                 return NotFound();
@@ -103,14 +116,14 @@ namespace LibraryManagementSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Title,Author,ISBN,PublicationYear,Edition,Publisher,DeweyIndex,Language,NoOfPages_LengthTime,Genre,Summary,BookImage,Cost,NumberOfCopies,CopiesAvailable,Type")] Book book)
+        public async Task<IActionResult> Edit(Guid id, Book book)
         {
 
             if (id != book.Id)
             {
                 return NotFound();
             }
-            var oldBook = await _context.Books.AsNoTracking().FirstOrDefaultAsync(b => b.Id == book.Id);
+            var oldBook = await _context.Books.AsNoTracking().Include(b => b.Location).FirstOrDefaultAsync(b => b.Id == id);
 
             if (Request.Form.Files.Count > 0)
             {
@@ -127,18 +140,14 @@ namespace LibraryManagementSystem.Controllers
                 book.BookImage = oldBook.BookImage;
             }
 
-            if(oldBook.Location.Name != book.Location.Name)
-            {
-                LibraryBranch branch = await _context.LibraryBranches.AsNoTracking().FirstOrDefaultAsync(b => b.Name == book.Location.Name);
+            LibraryBranch branch = await _context.LibraryBranches.FirstOrDefaultAsync(b => b.Name == book.Location.Name);
 
                 book.Location = branch;
-            }
 
-            if (ModelState.IsValid)
-            {
-                try
+            Book updateBook = book;
+            try
                 {
-                    _context.Update(book);
+                    _context.Update(updateBook);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -153,8 +162,8 @@ namespace LibraryManagementSystem.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(book);
+            //}
+            //return View(book);
         }
 
         // GET: Books/Delete/5
@@ -165,7 +174,7 @@ namespace LibraryManagementSystem.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books
+            var book = await _context.Books.Include(b => b.Location)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (book == null)
             {
@@ -180,8 +189,19 @@ namespace LibraryManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var book = await _context.Books.FindAsync(id);
-            _context.Books.Remove(book);
+            var book = await _context.Books.Include(b => b.Location).FirstOrDefaultAsync(b => b.Id == id);
+
+            LibraryBranch branch = await _context.LibraryBranches.FirstOrDefaultAsync(b => b.Name == book.Location.Name);
+
+            var assetValue = book.NumberOfCopies * book.Cost;
+            branch.TotalAssetValue = branch.TotalAssetValue - assetValue;
+            branch.NumberOfAssets = branch.NumberOfAssets - 1;
+
+            Book bookModel = book;
+
+            _context.Books.Remove(bookModel);
+
+            _context.Update(branch);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

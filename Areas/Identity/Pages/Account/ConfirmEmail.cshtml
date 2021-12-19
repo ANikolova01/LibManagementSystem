@@ -3,5 +3,15 @@
 @{
     ViewData["Title"] = "Confirm email";
 }
-
+<div class="page-width">
 <h1>@ViewData["Title"]</h1>
+<div class="card" style="width: 60%;">
+  <div class="card-body">
+    <h5 class="card-title">Confirm email</h5>
+    <h6 class="card-subtitle mb-2 text-muted">Email confirmed</h6>
+    <p class="card-text">Your email has been confirmed. Click on the link below to go back to the home page.</p>
+     <a class="btn btn-outline-info card-link" type="button" asp-area="" asp-controller="Home" asp-action="Index">
+     Back to home page</a>
+  </div>
+</div>
+</div>

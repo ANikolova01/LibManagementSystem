@@ -19,7 +19,7 @@ namespace LibraryManagementSystem.Migrations
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("LibraryMSystem.Data.Models.AvailabilityStatus", b =>
+            modelBuilder.Entity("LibraryManagementSystem.Models.AvailabilityStatus", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -65,7 +65,7 @@ namespace LibraryManagementSystem.Migrations
                         });
                 });
 
-            modelBuilder.Entity("LibraryMSystem.Data.Models.Book", b =>
+            modelBuilder.Entity("LibraryManagementSystem.Models.Book", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -75,8 +75,8 @@ namespace LibraryManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("AvailabilityStatusId")
-                        .HasColumnType("int");
+                    b.Property<string>("AvailabilityStatus")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("BookImage")
                         .HasColumnType("varbinary(max)");
@@ -130,14 +130,12 @@ namespace LibraryManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AvailabilityStatusId");
-
                     b.HasIndex("LocationId");
 
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("LibraryMSystem.Data.Models.BranchHours", b =>
+            modelBuilder.Entity("LibraryManagementSystem.Models.BranchHours", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -163,7 +161,7 @@ namespace LibraryManagementSystem.Migrations
                     b.ToTable("BranchHours");
                 });
 
-            modelBuilder.Entity("LibraryMSystem.Data.Models.Checkout", b =>
+            modelBuilder.Entity("LibraryManagementSystem.Models.Checkout", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -191,7 +189,7 @@ namespace LibraryManagementSystem.Migrations
                     b.ToTable("Checkouts");
                 });
 
-            modelBuilder.Entity("LibraryMSystem.Data.Models.CheckoutHistory", b =>
+            modelBuilder.Entity("LibraryManagementSystem.Models.CheckoutHistory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -219,7 +217,7 @@ namespace LibraryManagementSystem.Migrations
                     b.ToTable("CheckoutHistories");
                 });
 
-            modelBuilder.Entity("LibraryMSystem.Data.Models.LibraryBranch", b =>
+            modelBuilder.Entity("LibraryManagementSystem.Models.LibraryBranch", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -261,7 +259,7 @@ namespace LibraryManagementSystem.Migrations
                     b.ToTable("LibraryBranches");
                 });
 
-            modelBuilder.Entity("LibraryMSystem.Data.Models.LibraryCard", b =>
+            modelBuilder.Entity("LibraryManagementSystem.Models.LibraryCard", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -279,7 +277,7 @@ namespace LibraryManagementSystem.Migrations
                     b.ToTable("LibraryCards");
                 });
 
-            modelBuilder.Entity("LibraryMSystem.Data.Models.Patron", b =>
+            modelBuilder.Entity("LibraryManagementSystem.Models.Patron", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -335,7 +333,7 @@ namespace LibraryManagementSystem.Migrations
                     b.ToTable("Patrons");
                 });
 
-            modelBuilder.Entity("LibraryMSystem.Data.Models.Reservation", b =>
+            modelBuilder.Entity("LibraryManagementSystem.Models.Reservation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -366,37 +364,31 @@ namespace LibraryManagementSystem.Migrations
                     b.ToTable("Reservations");
                 });
 
-            modelBuilder.Entity("LibraryMSystem.Data.Models.Book", b =>
+            modelBuilder.Entity("LibraryManagementSystem.Models.Book", b =>
                 {
-                    b.HasOne("LibraryMSystem.Data.Models.AvailabilityStatus", "AvailabilityStatus")
-                        .WithMany()
-                        .HasForeignKey("AvailabilityStatusId");
-
-                    b.HasOne("LibraryMSystem.Data.Models.LibraryBranch", "Location")
+                    b.HasOne("LibraryManagementSystem.Models.LibraryBranch", "Location")
                         .WithMany("LibraryBooks")
                         .HasForeignKey("LocationId");
-
-                    b.Navigation("AvailabilityStatus");
 
                     b.Navigation("Location");
                 });
 
-            modelBuilder.Entity("LibraryMSystem.Data.Models.BranchHours", b =>
+            modelBuilder.Entity("LibraryManagementSystem.Models.BranchHours", b =>
                 {
-                    b.HasOne("LibraryMSystem.Data.Models.LibraryBranch", "Branch")
+                    b.HasOne("LibraryManagementSystem.Models.LibraryBranch", "Branch")
                         .WithMany()
                         .HasForeignKey("BranchId");
 
                     b.Navigation("Branch");
                 });
 
-            modelBuilder.Entity("LibraryMSystem.Data.Models.Checkout", b =>
+            modelBuilder.Entity("LibraryManagementSystem.Models.Checkout", b =>
                 {
-                    b.HasOne("LibraryMSystem.Data.Models.Book", "Book")
+                    b.HasOne("LibraryManagementSystem.Models.Book", "Book")
                         .WithMany()
                         .HasForeignKey("BookId");
 
-                    b.HasOne("LibraryMSystem.Data.Models.LibraryCard", "LibraryCard")
+                    b.HasOne("LibraryManagementSystem.Models.LibraryCard", "LibraryCard")
                         .WithMany("Checkouts")
                         .HasForeignKey("LibraryCardId");
 
@@ -405,13 +397,13 @@ namespace LibraryManagementSystem.Migrations
                     b.Navigation("LibraryCard");
                 });
 
-            modelBuilder.Entity("LibraryMSystem.Data.Models.CheckoutHistory", b =>
+            modelBuilder.Entity("LibraryManagementSystem.Models.CheckoutHistory", b =>
                 {
-                    b.HasOne("LibraryMSystem.Data.Models.Book", "Book")
+                    b.HasOne("LibraryManagementSystem.Models.Book", "Book")
                         .WithMany()
                         .HasForeignKey("BookId");
 
-                    b.HasOne("LibraryMSystem.Data.Models.LibraryCard", "LibraryCard")
+                    b.HasOne("LibraryManagementSystem.Models.LibraryCard", "LibraryCard")
                         .WithMany()
                         .HasForeignKey("LibraryCardId");
 
@@ -420,13 +412,13 @@ namespace LibraryManagementSystem.Migrations
                     b.Navigation("LibraryCard");
                 });
 
-            modelBuilder.Entity("LibraryMSystem.Data.Models.Patron", b =>
+            modelBuilder.Entity("LibraryManagementSystem.Models.Patron", b =>
                 {
-                    b.HasOne("LibraryMSystem.Data.Models.LibraryBranch", "HomeLibraryBranch")
+                    b.HasOne("LibraryManagementSystem.Models.LibraryBranch", "HomeLibraryBranch")
                         .WithMany("Patrons")
                         .HasForeignKey("HomeLibraryBranchId");
 
-                    b.HasOne("LibraryMSystem.Data.Models.LibraryCard", "LibraryCard")
+                    b.HasOne("LibraryManagementSystem.Models.LibraryCard", "LibraryCard")
                         .WithMany()
                         .HasForeignKey("LibraryCardId");
 
@@ -435,13 +427,13 @@ namespace LibraryManagementSystem.Migrations
                     b.Navigation("LibraryCard");
                 });
 
-            modelBuilder.Entity("LibraryMSystem.Data.Models.Reservation", b =>
+            modelBuilder.Entity("LibraryManagementSystem.Models.Reservation", b =>
                 {
-                    b.HasOne("LibraryMSystem.Data.Models.Book", "Book")
+                    b.HasOne("LibraryManagementSystem.Models.Book", "Book")
                         .WithMany()
                         .HasForeignKey("BookId");
 
-                    b.HasOne("LibraryMSystem.Data.Models.LibraryCard", "LibraryCard")
+                    b.HasOne("LibraryManagementSystem.Models.LibraryCard", "LibraryCard")
                         .WithMany()
                         .HasForeignKey("LibraryCardId");
 
@@ -450,14 +442,14 @@ namespace LibraryManagementSystem.Migrations
                     b.Navigation("LibraryCard");
                 });
 
-            modelBuilder.Entity("LibraryMSystem.Data.Models.LibraryBranch", b =>
+            modelBuilder.Entity("LibraryManagementSystem.Models.LibraryBranch", b =>
                 {
                     b.Navigation("LibraryBooks");
 
                     b.Navigation("Patrons");
                 });
 
-            modelBuilder.Entity("LibraryMSystem.Data.Models.LibraryCard", b =>
+            modelBuilder.Entity("LibraryManagementSystem.Models.LibraryCard", b =>
                 {
                     b.Navigation("Checkouts");
                 });

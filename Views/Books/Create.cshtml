@@ -111,28 +111,30 @@
             </div>
            <div class="form-row">
                 <div class="form-group col-auto">
-                    <label asp-for="AvailabilityStatus.Description" class="control-label"></label>
-                    <select asp-for="AvailabilityStatus.Description" class="form-control" id="availabilityStatusSelect1">
+                    <label asp-for="AvailabilityStatus" class="control-label"></label>
+                    <select asp-for="AvailabilityStatus" class="form-control" id="availabilityStatusSelect1">
                         <option>The item is lost.</option>
                         <option>The item is in good condition.</option>
                         <option>The item is in unknown whereabouts and condition.</option>
                         <option>The item has been destroyed.</option>
                     </select>
-                    <span asp-validation-for="AvailabilityStatus.Description" class="text-danger"></span>
+                    <span asp-validation-for="AvailabilityStatus" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-auto">
+                    <label asp-for="Type" class="control-label"></label>
+                    <select asp-for="Type" class="form-control" id="TypeSelect1">
+                            <option>Book</option>
+                            <option>Audio Book</option>
+                        </select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
                 </div>
                 <div class="form-group col-auto">
                     <label asp-for="Location.Name" class="control-label">Name of Library Branch</label>
                     <input asp-for="Location.Name" class="form-control" />
                     <span asp-validation-for="Location.Name" class="text-danger"></span>
                 </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
-                <select asp-for="Type" class="form-control" id="TypeSelect1">
-                        <option>Book</option>
-                        <option>Audio Book</option>
-                    </select>
-                <span asp-validation-for="Type" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

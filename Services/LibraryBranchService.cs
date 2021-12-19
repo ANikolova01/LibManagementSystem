@@ -52,12 +52,14 @@ namespace LibraryManagementSystem.Services
             return libraryBranch.Patrons.Count();
         }
 
-        public async Task<bool> UpdateAssetAmount(int branchId, int newAmount)
+        public async Task<bool> UpdateAssetAmount(int branchId, decimal newAmount)
         {
             var branch = await _context.LibraryBranches.SingleOrDefaultAsync(b => b.Id == branchId);
             if (branch != null)
             {
                 branch.TotalAssetValue = branch.TotalAssetValue + newAmount;
+                _context.Update(branch);
+                await _context.SaveChangesAsync();
                 return true;
             }
             else
@@ -73,6 +75,8 @@ namespace LibraryManagementSystem.Services
             if (branch != null)
             {
                 branch.NumberOfAssets = branch.NumberOfAssets + newBook;
+                _context.Update(branch);
+                await _context.SaveChangesAsync();
                 return true;
             }
             else

@@ -219,8 +219,9 @@ dd.book-details-info {
 }
 
 .page-width {
-    width: 80%;
+    width: 70%;
     margin: auto;
+    margin-top: 20px;
 }
 
 .h1 {
@@ -231,4 +232,8 @@ dd.book-details-info {
 .create-new-btn {
     margin-bottom: 20px;
     margin-top: 10px;
+}
+
+.nav-pills .nav-link.active {
+    background-color: #5cb85c !important;
 }

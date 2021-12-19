@@ -121,11 +121,13 @@ namespace LibraryManagementSystem.Controllers
                 libraryBranch.BranchImage = oldBranch.BranchImage;
             }
 
+            LibraryBranch updatedBranch = libraryBranch;
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(libraryBranch);
+                    _context.Update(updatedBranch);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
