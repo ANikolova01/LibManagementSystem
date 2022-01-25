@@ -22,11 +22,11 @@ namespace LibraryManagementSystem.Controllers
         // GET: Patrons
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Patrons.ToListAsync());
+            return View(await _context.Patrons.Include(p => p.LibraryCard).Include(p => p.HomeLibraryBranch).ToListAsync());
         }
 
         // GET: Patrons/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
             {
@@ -58,6 +58,7 @@ namespace LibraryManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                patron.Id = new Guid();
                 _context.Add(patron);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -66,14 +67,14 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: Patrons/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var patron = await _context.Patrons.FindAsync(id);
+            var patron = _context.Patrons.Include(p => p.HomeLibraryBranch).Include(p => p.LibraryCard).FirstOrDefault(p => p.Id == id);
             if (patron == null)
             {
                 return NotFound();
@@ -86,18 +87,50 @@ namespace LibraryManagementSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CreatedOn,UpdatedOn,FirstName,LastName,Address,DateOfBirth,Email,Telephone,OverdueFees,AccountStatus")] Patron patron)
+        public async Task<IActionResult> Edit(Guid id, Patron patron)
         {
+            
             if (id != patron.Id)
             {
                 return NotFound();
             }
+            var patronFound = await _context.Patrons.AsNoTracking().Include(p => p.LibraryCard).FirstOrDefaultAsync(p => p.Id == id);
+     //       var branch = patronFound.HomeLibraryBranch;
 
-            if (ModelState.IsValid)
+            if(patron.AccountStatus == "Approved" && patronFound.LibraryCard == null)
             {
+                patron.OverdueFees -= 10;
+
+                LibraryCard newCard = new LibraryCard();
+                newCard.Id = new Guid();
+                newCard.Issued = DateTime.Now;
+                newCard.CurrentFees = 0;
+                _context.LibraryCards.Add(newCard);
+                var cardModel = newCard;
+                patron.LibraryCard = cardModel;
+
+            }
+
+            else if(patron.AccountStatus == "Approved" && patronFound.LibraryCard != null)
+            {
+                patron.OverdueFees -= 10;
+                patron.AccountStatus = "Approved";
+            }
+
+            else if (patron.AccountStatus == "Deactivated" && patronFound.LibraryCard != null)
+            {
+                patron.OverdueFees += 10;
+                patron.AccountStatus = "Deactivated";
+
+            }
+
+            Patron patronModel = patron;
+
+            //if (ModelState.IsValid)
+            //{
                 try
                 {
-                    _context.Update(patron);
+                    _context.Update(patronModel);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -112,12 +145,12 @@ namespace LibraryManagementSystem.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(patron);
+            //}
+            //return View(patron);
         }
 
         // GET: Patrons/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
@@ -145,7 +178,7 @@ namespace LibraryManagementSystem.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PatronExists(int id)
+        private bool PatronExists(Guid id)
         {
             return _context.Patrons.Any(e => e.Id == id);
         }

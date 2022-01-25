@@ -27,6 +27,12 @@ namespace LibraryManagementSystem.Controllers
             return View(await _context.LibraryBranches.ToListAsync());
         }
 
+        // GET: LibraryBranches
+        public async Task<IActionResult> IndexBasic()
+        {
+            return View(await _context.LibraryBranches.ToListAsync());
+        }
+
         // GET: LibraryBranches/Details/5
         public async Task<IActionResult> Details(int? id)
         {

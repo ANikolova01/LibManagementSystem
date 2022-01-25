@@ -29,17 +29,30 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Index">Books Catalog</a>
                         </li>
-                    <li class="dropdown">
-                          <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Options
-                          </button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" asp-area="" asp-controller="Books" asp-action="Index">Books</a>
-                            <a class="dropdown-item" asp-area="" asp-controller="Patrons" asp-action="Index">Patrons</a>
-                            <a class="dropdown-item" asp-area="" asp-controller="Checkouts" asp-action="Index">Checkouts</a>                            
-                            <a class="dropdown-item" asp-area="" asp-controller="LibraryBranches" asp-action="Index">Branches</a>
-                          </div>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="LibraryBranches" asp-action="IndexBasic">Branches Catalog</a>
+                        </li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="dropdown">
+                            <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Options
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" asp-area="" asp-controller="Books" asp-action="Index">Books</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Patrons" asp-action="Index">Patrons</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Checkouts" asp-action="Index">Checkouts</a>                            
+                                <a class="dropdown-item" asp-area="" asp-controller="LibraryBranches" asp-action="Index">Branches</a>                            
+                                <a class="dropdown-item" asp-area="" asp-controller="BranchHours" asp-action="Index">Branch Hours</a>
+                            </div>
+                        </li>
+                    }
+                    @if (User.IsInRole("SuperAdmin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="UserRoles" asp-action="Index">User Roles</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

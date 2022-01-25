@@ -7,9 +7,9 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-outline-success create-new-btn">Create New</a>
 </p>
-<table class="ui celled table compact table-striped table-hover col-md-6" id="branchHoursIndexTable">
+<table class="ui celled table compact table-striped table-hover" id="branchHoursIndexTable">
     <thead>
         <tr>
             <th>
@@ -33,9 +33,42 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Branch.Name)
             </td>
-            <td>
+            @{
+            switch (item.DayOfWeek)
+            {
+                case 0:          <td>
+                                    Monday
+                                </td>
+                    break;
+                case 1:          <td>
+                                    Tuesday
+                                </td>
+                    break;
+                case 2:          <td>
+                                    Wednesday
+                                </td>
+                    break;
+                case 3:          <td>
+                                    Thursday
+                                </td>
+                    break;
+                case 4:          <td>
+                                    Friday
+                                </td>
+                    break;
+                case 5:          <td>
+                                    Saturday
+                                </td>
+                    break;
+                case 6:          <td>
+                                    Sunday
+                                </td>
+                    break;
+            }
+        }
+@*            <td>
                 @Html.DisplayFor(modelItem => item.DayOfWeek)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.OpenTime)
             </td>
@@ -68,7 +101,12 @@
 
     <script>
         $(document).ready(function () {
-            var table = $('#catalogIndexTable').DataTable();
+            var table = $('#branchHoursIndexTable').DataTable(                
+                {"columnDefs": [
+                { "orderable": false, "targets": [2, 3, 4] },
+                { "orderable": true, "targets": [0, 1] }
+            ]});
         });
+
     </script>
 }

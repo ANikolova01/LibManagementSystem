@@ -15,6 +15,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using LibraryManagementSystem.Models.Enums;
+using LibraryManagementSystem.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagementSystem.Areas.Identity.Pages.Account
 {
@@ -25,17 +28,21 @@ namespace LibraryManagementSystem.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly LibraryDbContext _context;
+
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            LibraryDbContext libraryContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = libraryContext;
         }
 
         [BindProperty]
@@ -44,6 +51,9 @@ namespace LibraryManagementSystem.Areas.Identity.Pages.Account
         public string ReturnUrl { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
+
+        [TempData]
+        public string StatusMessage { get; set; }
 
         public class InputModel
         {
@@ -56,6 +66,7 @@ namespace LibraryManagementSystem.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Username")]
+            [Remote("doesUserNameExist", "Account", HttpMethod = "POST", ErrorMessage = "User name already exists. Please enter a different user name.")]
             public string UserName { get; set; }
             [Required]
             [EmailAddress]
@@ -63,15 +74,34 @@ namespace LibraryManagementSystem.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+     //       [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 8)]
+            [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$", ErrorMessage ="Password must be at least 8 characters long and have at least one letter, one number and one special character.")]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
+            [Required(ErrorMessage = "Confirmation Password is required.")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [Display(Name = "Home Library Branch")]
+            public string HomeLibraryBranch { get; set; }
+
+            [Display(Name = "Date of Birth")]
+            [DataType(DataType.Date)]
+            public DateTime DateOfBirth { get; set; }
+
+            [Display(Name = "Address")]
+            [Required]
+            public string Address { get; set; }
+
+            [Phone]
+            [Required]
+            [Display(Name = "Phone Number")]
+            public string PhoneNumber { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -84,20 +114,69 @@ namespace LibraryManagementSystem.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            var userCheck = await _userManager.FindByNameAsync(Input.UserName);
+            if(userCheck != null)
+            {
+                StatusMessage = "Username is already in use. Select a different username.";
+                return RedirectToPage();
+            }
             if (ModelState.IsValid)
             {
+                var branch = await _context.LibraryBranches.FirstOrDefaultAsync(b => b.Name == Input.HomeLibraryBranch);
+
+                LibraryBranch branchDraft = branch;
+
+                var patronDraft = new Patron
+                {
+                    CreatedOn = DateTime.Now,
+                    UpdatedOn = DateTime.Now,
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    Address = Input.Address,
+                    DateOfBirth = Input.DateOfBirth,
+                    Email = Input.Email,
+                    Telephone = Input.PhoneNumber,
+                    OverdueFees = 10,
+                    HomeLibraryBranch = branchDraft,
+                    AccountStatus = "Pending",
+
+                };
+
+                //   Patron patron = patronDraft;
+
+                patronDraft.Id = new Guid();
+                _context.Patrons.Add(patronDraft);
+                await _context.SaveChangesAsync();
+
+                //LibraryBranch branchDraft1 = branchDraft;
+                //patronDraft.HomeLibraryBranch = branchDraft1;
+
+                Patron patronDraft1 = patronDraft;
+
+
                 MailAddress address = new MailAddress(Input.Email);
                 string userName = address.User;
                 var user = new ApplicationUser { 
                     UserName = Input.UserName, 
                     Email = Input.Email,
                     FirstName = Input.FirstName,
-                    LastName = Input.LastName
+                    LastName = Input.LastName,
+                    PhoneNumber = Input.PhoneNumber,
+                    HomeLibraryBranch = Input.HomeLibraryBranch,
+                    DateOfBirth = Input.DateOfBirth,
+                    Address = Input.Address
                 };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    await _userManager.AddToRoleAsync(user, Roles.Basic.ToString());
+
+                    user.PatronAcc = patronDraft;
+
+                    await _userManager.UpdateAsync(user);
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

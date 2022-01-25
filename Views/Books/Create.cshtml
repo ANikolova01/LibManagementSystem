@@ -111,14 +111,14 @@
             </div>
            <div class="form-row">
                 <div class="form-group col-auto">
-                    <label asp-for="AvailabilityStatus" class="control-label"></label>
-                    <select asp-for="AvailabilityStatus" class="form-control" id="availabilityStatusSelect1">
-                        <option>The item is lost.</option>
-                        <option>The item is in good condition.</option>
-                        <option>The item is in unknown whereabouts and condition.</option>
-                        <option>The item has been destroyed.</option>
+                    <label asp-for="AvailabilityStatus.Name" class="control-label"></label>
+                    <select asp-for="AvailabilityStatus.Name" class="form-control" id="availabilityStatusSelect1">
+                        <option value="LOST">Lost</option>
+                        <option value="GOOD_CONDITION">Good Condition</option>
+                        <option value="UNKNOWN_CONDITION">Unknown Condition</option>
+                        <option value="DESTROYED">Destroyed</option>
                     </select>
-                    <span asp-validation-for="AvailabilityStatus" class="text-danger"></span>
+                    <span asp-validation-for="AvailabilityStatus.Name" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-row">

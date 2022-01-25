@@ -7,12 +7,18 @@
 <div class="page-width">
 <h1 class="title-place">Books Catalog</h1>
 
-<p>
+<div class="row">
     <a asp-action="Create" class="btn btn-outline-success create-new-btn">Create New</a>
-</p>
+
+    <div class="text-right" style="margin-left: 20px;">
+    <a asp-action="Index1" class="btn btn-outline-success create-new-btn">Books in Downtown</a>
+    <a asp-action="Index2" class="btn btn-outline-info create-new-btn">Books in Oakville</a>
+    <a asp-action="Index3" class="btn btn-outline-warning create-new-btn">Books in Pacific Branch</a>
+    </div>
+</div>
 <div id="books">
 <div id="books-table"> 
-    <table class="table" id="booksIndexTable">
+    <table class="ui celled table compact table-striped table-hover" id="booksIndexTable">
         <thead>
             <tr>
                 <th>
@@ -36,7 +42,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Publisher)
                 </th>
-
+                <th>
+                    @Html.DisplayNameFor(model => model.Location.Name)
+                </th>
                 <th></th>
             </tr>
         </thead>
@@ -64,6 +72,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Publisher)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location.Name)
                 </td>
                 <td>
                     <div class="btn-group btn-group-sm" role="group">
@@ -97,8 +108,8 @@
         $(document).ready(function () {
             var table = $('#booksIndexTable').DataTable(                
                 {"columnDefs": [
-                { "orderable": false, "targets": [0, 7] },
-                { "orderable": true, "targets": [1, 2, 3, 4, 5, 6] }
+                { "orderable": false, "targets": [0, 8] },
+                { "orderable": true, "targets": [1, 2, 3, 4, 5, 6, 7] }
             ]});
         });
 

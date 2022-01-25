@@ -11,7 +11,7 @@ namespace LibraryManagementSystem.Models
     [Table("Patrons")]
     public class Patron
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [Display(Name = "Created On")]
         public DateTime CreatedOn { get; set; }
         [Display(Name = "Updated On")]

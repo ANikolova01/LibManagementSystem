@@ -4,14 +4,16 @@ using LibraryManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace LibraryManagementSystem.Data.Migrations
+namespace LibraryManagementSystem.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211220164855_Identity User-v1.0")]
+    partial class IdentityUserv10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,8 +72,8 @@ namespace LibraryManagementSystem.Data.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PatronAccId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("PatronAccId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
@@ -88,6 +90,9 @@ namespace LibraryManagementSystem.Data.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("UsernameChangeLimit")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -190,8 +195,8 @@ namespace LibraryManagementSystem.Data.Migrations
                     b.Property<DateTime>("CheckedOutUntil")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("LibraryCardId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("LibraryCardId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -246,10 +251,9 @@ namespace LibraryManagementSystem.Data.Migrations
 
             modelBuilder.Entity("LibraryManagementSystem.Models.LibraryCard", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("CurrentFees")
                         .HasColumnType("decimal(18,4)");
@@ -264,10 +268,9 @@ namespace LibraryManagementSystem.Data.Migrations
 
             modelBuilder.Entity("LibraryManagementSystem.Models.Patron", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AccountStatus")
                         .HasColumnType("nvarchar(max)");
@@ -297,8 +300,8 @@ namespace LibraryManagementSystem.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("LibraryCardId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("LibraryCardId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("OverdueFees")
                         .HasColumnType("decimal(18,4)");

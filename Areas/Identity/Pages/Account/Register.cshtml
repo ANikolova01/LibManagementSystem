@@ -5,78 +5,146 @@
 }
 <div class="page-width">
 <h1>@ViewData["Title"]</h1>
-
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                <h4>Create a new account.</h4>
+<div class="card border-success mb-3" style="position: relative">
+    <div class="card-title text-success register-title">Create a new account.</div>
                 <hr />
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
+        <form asp-route-returnUrl="@Model.ReturnUrl" class="needs-validation" method="post" novalidate>
+               @* <div asp-validation-summary="All" class="text-danger"></div>*@
+             <div class="form-row form-row-align">
+                <div class="col-md-5 form-group">
                     <label asp-for="Input.FirstName"></label>
-                    <input asp-for="Input.FirstName" class="form-control" />
-                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                    <input asp-for="Input.FirstName" class="form-control" placeholder="First name" required/>
+                    <span asp-validation-for="Input.FirstName" class="alert-danger alert-text"></span>
                 </div>
-                <div class="form-group">
+                <div class="col-md-5 form-group">
                     <label asp-for="Input.LastName"></label>
-                    <input asp-for="Input.LastName" class="form-control" />
-                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
+                    <input asp-for="Input.LastName" class="form-control" placeholder="Last name" required/>
+                    <span asp-validation-for="Input.LastName" class="alert-danger alert-text"></span>
+                </div>  
+              </div>
+              <div class="form-row form-row-align">
+                <div class="col-md-5 form-group">
                     <label asp-for="Input.UserName"></label>
-                    <input asp-for="Input.UserName" class="form-control" />
-                    <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                    <div class="input-group form-outline">
+                    <span class="input-group-text" id="inputGroupPrepend2"><i class="fa fa-at"></i></span>
+                    <input asp-for="Input.UserName" class="form-control" placeholder="Username" required/></div>
+                    <span asp-validation-for="Input.UserName" class="alert-danger alert-text"></span>
                 </div>
-                <div class="form-group">
+                <div class="col-md-5 form-group">
                     <label asp-for="Input.Email"></label>
-                    <input asp-for="Input.Email" class="form-control" />
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    <input asp-for="Input.Email" class="form-control" placeholder="Email" required/>
+                    <span asp-validation-for="Input.Email" class="alert-danger alert-text"></span>
                 </div>
-                <div class="form-group">
+             </div>
+             <div class="form-row form-row-align">
+                <div class="col-md-5 form-group">
                     <label asp-for="Input.Password"></label>
-                    <input asp-for="Input.Password" class="form-control" />
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    <div class="input-group" id="show_hide_password">
+                    <input asp-for="Input.Password" class="form-control password" type="password" placeholder="Password"  id="password" minlength="8" required>
+                    <span class="input-group-text">
+                    <i class="fa fa-eye-slash" id="togglePassword" style="cursor: pointer"></i>
+                    </span>
+		            <small id="passwordHelpBlock" class="form-text text-muted">
+					            Your password must be at least 8 characters long, must contain special characters "!@@#$%&*_?", numbers and lower letters.
+		            </small>
+                    <span asp-validation-for="Input.Password" class="alert-danger alert-text"></span>
+                    </div>
                 </div>
-                <div class="form-group">
+                <div class="col-md-5 form-group">
                     <label asp-for="Input.ConfirmPassword"></label>
-                    <input asp-for="Input.ConfirmPassword" class="form-control" />
-                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    <div class="input-group" id="show_hide_password">
+                    <input asp-for="Input.ConfirmPassword" class="form-control password" type="password" placeholder="Confirm Password" id="confirmpassword" required>
+                      <span class="input-group-text">
+                        <i class="fa fa-eye-slash" id="toggleConfirmPassword" style="cursor: pointer"></i>
+                       </span>
+                    </div>
+                    <span asp-validation-for="Input.ConfirmPassword" class="alert-danger alert-text"></span>
                 </div>
-                <button type="submit" class="btn btn-primary">Register</button>
-            </form>
-        </div>
-        <div class="col-md-6 col-md-offset-2">
-            <section>
-                <h4>Use another service to register.</h4>
-                <hr />
-                @{
-                    if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                    {
-                        <div>
-                            <p>
-                                There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                                for details on setting up this ASP.NET application to support logging in via external services.
-                            </p>
-                        </div>
-                    }
-                    else
-                    {
-                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                            <div>
-                                <p>
-                                    @foreach (var provider in Model.ExternalLogins)
-                                    {
-                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                    }
-                                </p>
-                            </div>
-                        </form>
-                    }
-                }
-            </section>
-        </div>
+            </div>
+            <div class="form-row-align form-row">
+                <div class="col-md-5 form-group">
+                    <label asp-for="Input.DateOfBirth"></label>
+                    <div type="date" class="input-group">
+                    <input asp-for="Input.DateOfBirth" class="form-control" placeholder="Date Of Birth" required>
+                </div>
+                    <span asp-validation-for="Input.DateOfBirth" class="alert-danger alert-text"></span>
+                </div>
+                <div class="col-md-5 form-group">
+                    <label asp-for="Input.HomeLibraryBranch"></label>
+                    <div class="input-group">
+                    <select asp-for="Input.HomeLibraryBranch" class="form-control" id="exampleFormControlSelect1" placeholder="Home Library Branch" required>
+                        <option value="" selected disabled>Please Select</option>
+                        <option value="Downtown">Downtown</option>
+                        <option value="Oakville">Oakville</option>
+                        <option value="Pacific Branch">Pacific Branch</option>
+                    </select>                
+                    </div>    
+                    <span asp-validation-for="Input.HomeLibraryBranch" class="alert-danger alert-text"></span>
+               </div>
+            </div>
+            <div class="form-row form-row-align">
+            <div class="col-md-5 form-group">
+                <label asp-for="Input.Address"></label>
+                <div class="input-group">
+                <input asp-for="Input.Address" class="form-control" placeholder="Address" required>
+            </div>
+                <span asp-validation-for="Input.Address" class="alert-danger alert-text"></span>
+            </div>
+            
+            <div class="col-md-5 form-group">
+                <label asp-for="Input.PhoneNumber"></label>
+                <div class="input-group">
+                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Phone Number" required>
+            </div>
+                <span asp-validation-for="Input.PhoneNumber" class="alert-danger alert-text"></span>
+            </div>
+            </div>
+                <button type="submit" class="form-row-align btn alert-success btn-lg">Register</button>
+                <br />
+                <br />
+     </form>
     </div>
 </div>
+
+@section Styles {
+    <style>
+    a, a:hover{
+        color:#333
+    }
+    </style>
+}
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+    $("#togglePassword").click(function (e) {
+    e.preventDefault();
+    var type = $(this).parent().parent().find("#password").attr("type");
+    console.log(type);
+    if(type == "password"){
+        $(this).removeClass("fa-eye-slash");
+        $(this).addClass("fa-eye");
+        $(this).parent().parent().find("#password").attr("type","text");
+    }else if(type == "text"){
+        $(this).removeClass("fa-eye");
+        $(this).addClass("fa-eye-slash");
+        $(this).parent().parent().find("#password").attr("type","password");
+    }});
+
+        $("#toggleConfirmPassword").click(function (e) {
+    e.preventDefault();
+    var type2 = $(this).parent().parent().find("#confirmpassword").attr("type");
+    console.log(type);
+    if(type2 == "password"){
+        $(this).removeClass("fa-eye-slash");
+        $(this).addClass("fa-eye");
+        $(this).parent().parent().find("#confirmpassword").attr("type","text");
+    }else if(type2 == "text"){
+        $(this).removeClass("fa-eye");
+        $(this).addClass("fa-eye-slash");
+        $(this).parent().parent().find("#confirmpassword").attr("type","password");
+    }});
+    </script>
+
 }

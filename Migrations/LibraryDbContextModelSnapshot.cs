@@ -75,8 +75,8 @@ namespace LibraryManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AvailabilityStatus")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("AvailabilityStatusId")
+                        .HasColumnType("int");
 
                     b.Property<byte[]>("BookImage")
                         .HasColumnType("varbinary(max)");
@@ -130,6 +130,8 @@ namespace LibraryManagementSystem.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AvailabilityStatusId");
+
                     b.HasIndex("LocationId");
 
                     b.ToTable("Books");
@@ -177,8 +179,8 @@ namespace LibraryManagementSystem.Migrations
                     b.Property<DateTime>("CheckedOutUntil")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("LibraryCardId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("LibraryCardId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -205,8 +207,8 @@ namespace LibraryManagementSystem.Migrations
                     b.Property<DateTime>("CheckedOut")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("LibraryCardId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("LibraryCardId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -261,10 +263,9 @@ namespace LibraryManagementSystem.Migrations
 
             modelBuilder.Entity("LibraryManagementSystem.Models.LibraryCard", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("CurrentFees")
                         .HasColumnType("decimal(18,4)");
@@ -279,10 +280,9 @@ namespace LibraryManagementSystem.Migrations
 
             modelBuilder.Entity("LibraryManagementSystem.Models.Patron", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AccountStatus")
                         .HasColumnType("nvarchar(max)");
@@ -312,8 +312,8 @@ namespace LibraryManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("LibraryCardId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("LibraryCardId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("OverdueFees")
                         .HasColumnType("decimal(18,4)");
@@ -346,8 +346,8 @@ namespace LibraryManagementSystem.Migrations
                     b.Property<DateTime>("HoldPlaced")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("LibraryCardId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("LibraryCardId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
@@ -366,9 +366,15 @@ namespace LibraryManagementSystem.Migrations
 
             modelBuilder.Entity("LibraryManagementSystem.Models.Book", b =>
                 {
+                    b.HasOne("LibraryManagementSystem.Models.AvailabilityStatus", "AvailabilityStatus")
+                        .WithMany()
+                        .HasForeignKey("AvailabilityStatusId");
+
                     b.HasOne("LibraryManagementSystem.Models.LibraryBranch", "Location")
                         .WithMany("LibraryBooks")
                         .HasForeignKey("LocationId");
+
+                    b.Navigation("AvailabilityStatus");
 
                     b.Navigation("Location");
                 });

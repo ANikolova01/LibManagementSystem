@@ -3,77 +3,113 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
+<div class="page-width">
 <h1>Edit</h1>
 
 <h4>Patron</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
+            <div class="form-row">
+            <div class="form-group col-auto">
                 <label asp-for="CreatedOn" class="control-label"></label>
                 <input asp-for="CreatedOn" class="form-control" />
                 <span asp-validation-for="CreatedOn" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-auto">
                 <label asp-for="UpdatedOn" class="control-label"></label>
                 <input asp-for="UpdatedOn" class="form-control" />
                 <span asp-validation-for="UpdatedOn" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            </div>
+            <div class="form-row">
+            <div class="form-group col-auto">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-auto">
                 <label asp-for="LastName" class="control-label"></label>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            </div>
+            <div class="form-row">
+            <div class="form-group col-auto">
                 <label asp-for="Address" class="control-label"></label>
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-auto">
                 <label asp-for="DateOfBirth" class="control-label"></label>
                 <input asp-for="DateOfBirth" class="form-control" />
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            </div>
+            <div class="form-row">
+            <div class="form-group col-auto">
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-auto">
                 <label asp-for="Telephone" class="control-label"></label>
                 <input asp-for="Telephone" class="form-control" />
                 <span asp-validation-for="Telephone" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            </div>
+            <div class="form-row">
+            <div class="form-group col-auto">
                 <label asp-for="OverdueFees" class="control-label"></label>
                 <input asp-for="OverdueFees" class="form-control" />
                 <span asp-validation-for="OverdueFees" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-auto">
                 <label asp-for="AccountStatus" class="control-label"></label>
-                <input asp-for="AccountStatus" class="form-control" />
+                 <select asp-for="AccountStatus" class="form-control" id="accountStatusSelect1">
+@*                <input asp-for="AccountStatus" class="form-control" />*@
+                    <option class="pending" value="Pending">Pending</option>                    
+                    <option class="approved" value="Approved">Approved</option>
+                    <option class="deactivated" value="Deactivated">Deactivated</option>
+                </select>
                 <span asp-validation-for="AccountStatus" class="text-danger"></span>
+            </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
+    <div class="col-md-4">
+        <p class="font-italic font-weight-light"><i class="fa fa-info-circle"></i>The Account Status for any Patron can be one of the following:</p>
+        <div class=" approved-border">
+        <p class="font-weight-bold"><i class="fa fa-check-circle approved-icon"></i> Approved
+           <p class="font-weight-normal">The user can log in and view checkout history and current checkouts, as well as be able to check out new books and have an active Library Card.</p> 
+        </p>
+        </div>
+        <br />
+        <div class="pending-border">
+        <p class="font-weight-bold"><i class="fa fa-circle pending-icon"></i> Pending
+           <p class="font-weight-normal"> The user can log in with their account, but cannot check out new books until they have paid for the membership fee of 10 dollars. Once this is done,
+            they will receive a current Library Card and be allowed to check out books from any of the library branches.</p>
+       </p>
+        </div>
+        <br />
+        <div class=" deactivated-border">
+        <p class="font-weight-bold"><i class="fa fa-exclamation-circle deactivated-icon"></i> Deactivated
+            <p class="font-weight-normal">The user can log in, but cannot check out any new books or have an active Library Card until they have paid for their respective fees.</p>    
+        </p>
+        </div>
+    </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
 </div>
-
+</div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

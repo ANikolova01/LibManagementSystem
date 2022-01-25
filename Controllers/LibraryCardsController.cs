@@ -26,7 +26,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: LibraryCards/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
             {
@@ -58,6 +58,7 @@ namespace LibraryManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                libraryCard.Id = new Guid();
                 _context.Add(libraryCard);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -86,7 +87,7 @@ namespace LibraryManagementSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CurrentFees,Issued")] LibraryCard libraryCard)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,CurrentFees,Issued")] LibraryCard libraryCard)
         {
             if (id != libraryCard.Id)
             {
@@ -117,7 +118,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: LibraryCards/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
@@ -145,7 +146,7 @@ namespace LibraryManagementSystem.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool LibraryCardExists(int id)
+        private bool LibraryCardExists(Guid id)
         {
             return _context.LibraryCards.Any(e => e.Id == id);
         }

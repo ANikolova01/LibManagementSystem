@@ -237,3 +237,93 @@ dd.book-details-info {
 .nav-pills .nav-link.active {
     background-color: #5cb85c !important;
 }
+
+.hours-details {
+    border-style: groove;
+    border-color: #e6e6e6;
+    /*    background-color: #fff1d9;
+*/
+}
+
+dt.hours-details-desc {
+    border-bottom-style: dashed;
+    border-color: #e6e6e6;
+}
+
+dd.hours-details-info {
+    border: 1px solid grey;
+    border-radius: 5px;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    background-color: #5cb85c !important;
+}
+
+.warning-card-link {
+    color: #fff;
+}
+
+.pending {
+    background-color: #ffde7a !important;
+}
+
+.pending-icon {
+    color: #ffd44f !important;
+}
+
+.approved {
+    background-color: #b5ff87 !important;
+}
+
+.approved-icon {
+    color: #8eff47 !important;
+}
+.deactivated {
+    background-color: #ff9d87 !important;
+}
+.deactivated-icon {
+    color: #ff6f4f !important;
+}
+
+.approved-border {
+    border: 2px;
+    border-style: solid;
+    border-color: #b5ff87;
+    padding: 1em;
+    background-color: #d9ffc2;
+}
+
+.pending-border {
+    border: 2px;
+    border-style: solid;
+    border-color: #ffde7a;
+    padding: 1em;
+    background-color: #ffefbd;
+}
+
+.deactivated-border {
+    border: 2px;
+    border-style: solid;
+    border-color: #ff9d87;
+    padding: 1em;
+    background-color: #ffc1b3;
+}
+
+.alert-text {
+    font-size: small !important;
+    font-weight: bold !important;
+    border-radius: 5px !important;
+    text-align: center!important;
+}
+
+.register-title {
+    margin-top: 10px;
+    margin-left: 20px;
+    font-size: large;
+    margin-bottom: -0.25%;
+    font-weight: 500;
+}
+
+.form-row-align {
+    padding-left: 15% !important;
+}

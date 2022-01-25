@@ -3,40 +3,76 @@
 @{
     ViewData["Title"] = "Details";
 }
-
+<div class="page-width">
 <h1>Details</h1>
 
 <div>
     <h4>BranchHours</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
+ <div class="row">
+    <dl class="col-md-6 hours-details"> 
+        <dt class = "col-sm-4 hours-details-desc">
             @Html.DisplayNameFor(model => model.Branch.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-10 hours-details-info">
             @Html.DisplayFor(model => model.Branch.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-4 hours-details-desc">
             @Html.DisplayNameFor(model => model.DayOfWeek)
         </dt>
-        <dd class = "col-sm-10">
+            @{
+                switch (Model.DayOfWeek)
+                {
+                    case 0:         <dd class = "col-sm-10 hours-details-info">
+                                        Monday
+                        </dd>
+                        break;
+                    case 1:          <dd class = "col-sm-10 hours-details-info">
+                                        Tuesday
+                        </dd>
+                        break;
+                    case 2:         <dd class = "col-sm-10 hours-details-info">
+                                        Wednesday
+                        </dd>
+                        break;
+                    case 3:          <dd class = "col-sm-10 hours-details-info">
+                                        Thursday
+                        </dd>
+                        break;
+                    case 4:         <dd class = "col-sm-10 hours-details-info">
+                                        Friday
+                        </dd>
+                        break;
+                    case 5:          <dd class = "col-sm-10 hours-details-info">
+                                        Saturday
+                        </dd>
+                        break;
+                    case 6:          <dd class = "col-sm-10 hours-details-info">
+                                        Sonday
+                        </dd>
+                        break;
+                }
+        }
+@*        <dd class = "col-sm-10 hours-details-info">
             @Html.DisplayFor(model => model.DayOfWeek)
-        </dd>
-        <dt class = "col-sm-2">
+        </dd>*@
+        <dt class = "col-sm-4 hours-details-desc">
             @Html.DisplayNameFor(model => model.OpenTime)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-10 hours-details-info">
             @Html.DisplayFor(model => model.OpenTime)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-4 hours-details-desc">
             @Html.DisplayNameFor(model => model.CloseTime)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-10 hours-details-info">
             @Html.DisplayFor(model => model.CloseTime)
         </dd>
     </dl>
 </div>
+</div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a> 
     <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
+</div>
 </div>

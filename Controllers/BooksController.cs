@@ -27,7 +27,31 @@ namespace LibraryManagementSystem.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Books.ToListAsync());
+            return View(await _context.Books.Include(b => b.Location).Include(b => b.AvailabilityStatus).ToListAsync());
+        }
+
+        // GET: Books
+        public async Task<IActionResult> Index1()
+        {
+            var books = await _context.Books.Include(b => b.Location).Include(b => b.AvailabilityStatus).ToListAsync();
+
+            return View(books.Where(b => b.Location.Name == "Downtown"));
+        }
+
+        // GET: Books
+        public async Task<IActionResult> Index2()
+        {
+            var books = await _context.Books.Include(b => b.Location).Include(b => b.AvailabilityStatus).ToListAsync();
+
+            return View(books.Where(b => b.Location.Name == "Oakville"));
+        }
+
+        // GET: Books
+        public async Task<IActionResult> Index3()
+        {
+            var books = await _context.Books.Include(b => b.Location).Include(b => b.AvailabilityStatus).ToListAsync();
+
+            return View(books.Where(b => b.Location.Name == "Pacific Branch"));
         }
 
         // GET: Books/Details/5
@@ -38,7 +62,7 @@ namespace LibraryManagementSystem.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books.Include(b => b.Location)
+            var book = await _context.Books.Include(b => b.Location).Include(b => b.AvailabilityStatus)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (book == null)
             {
@@ -74,9 +98,16 @@ namespace LibraryManagementSystem.Controllers
             book.Id = Guid.NewGuid();
 
             LibraryBranch branch = await _context.LibraryBranches.FirstOrDefaultAsync(b => b.Name == book.Location.Name);
+            AvailabilityStatus status = await _context.Statuses.FirstOrDefaultAsync(s => s.Name == book.AvailabilityStatus.Name);
 
+            if(branch == null)
+            {
+                ViewBag.ErrorMessage = $"Branch Name = {book.Location.Name} cannot be found";
+                return View("NotFound");
+            }
 
             book.Location = branch;
+            book.AvailabilityStatus = status;
 
             Book bookModel = book;
 
@@ -103,7 +134,7 @@ namespace LibraryManagementSystem.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books.Include(b => b.Location).FirstOrDefaultAsync(b => b.Id == id);
+            var book = await _context.Books.Include(b => b.Location).Include(b => b.AvailabilityStatus).FirstOrDefaultAsync(b => b.Id == id);
             if (book == null)
             {
                 return NotFound();
@@ -123,7 +154,7 @@ namespace LibraryManagementSystem.Controllers
             {
                 return NotFound();
             }
-            var oldBook = await _context.Books.AsNoTracking().Include(b => b.Location).FirstOrDefaultAsync(b => b.Id == id);
+            var oldBook = await _context.Books.Include(b => b.Location).Include(b => b.AvailabilityStatus).FirstOrDefaultAsync(b => b.Id == id);
 
             if (Request.Form.Files.Count > 0)
             {
@@ -132,19 +163,31 @@ namespace LibraryManagementSystem.Controllers
                 {
                     await file.CopyToAsync(dataStream);
                     book.BookImage = dataStream.ToArray();
+                    oldBook.BookImage = book.BookImage;
                 }
             }
 
-            else
+
+            if(oldBook.Location.Name != book.Location.Name)
             {
-                book.BookImage = oldBook.BookImage;
+                LibraryBranch branch = await _context.LibraryBranches.FirstOrDefaultAsync(b => b.Name == book.Location.Name);
+
+                oldBook.Location = branch;
+            }
+            //else
+            //{
+            //    book.Location = oldBook.Location;
+            //}
+
+            if(oldBook.AvailabilityStatus.Name != book.AvailabilityStatus.Name)
+            {
+                AvailabilityStatus status = await _context.Statuses.FirstOrDefaultAsync(s => s.Name == book.AvailabilityStatus.Name);
+
+                oldBook.AvailabilityStatus = status;
             }
 
-            LibraryBranch branch = await _context.LibraryBranches.FirstOrDefaultAsync(b => b.Name == book.Location.Name);
-
-                book.Location = branch;
-
-            Book updateBook = book;
+            //       Book updateBook = book;
+            Book updateBook = oldBook;
             try
                 {
                     _context.Update(updateBook);
@@ -174,7 +217,7 @@ namespace LibraryManagementSystem.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books.Include(b => b.Location)
+            var book = await _context.Books.Include(b => b.Location).Include(b => b.AvailabilityStatus)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (book == null)
             {
@@ -189,7 +232,7 @@ namespace LibraryManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var book = await _context.Books.Include(b => b.Location).FirstOrDefaultAsync(b => b.Id == id);
+            var book = await _context.Books.Include(b => b.Location).Include(b => b.AvailabilityStatus).FirstOrDefaultAsync(b => b.Id == id);
 
             LibraryBranch branch = await _context.LibraryBranches.FirstOrDefaultAsync(b => b.Name == book.Location.Name);
 
@@ -210,5 +253,7 @@ namespace LibraryManagementSystem.Controllers
         {
             return _context.Books.Any(e => e.Id == id);
         }
+
+
     }
 }

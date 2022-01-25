@@ -48,14 +48,16 @@ namespace LibraryManagementSystem.Areas.Identity.Pages.Account
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ChangeEmailAsync(user, email, code);
-            if (roles[0] == "User")
+            if (roles[0] == "Basic")
             {
-                var patronAcc = await _context.Patrons.FirstOrDefaultAsync(p => p.Id == user.PatronAcc.Id);
+                var user1 = await _userManager.Users.Include(u => u.PatronAcc).FirstOrDefaultAsync(u => u.Id == user.Id);
+                var patronAcc = user1.PatronAcc;
                 if (patronAcc != null)
                 {
                     patronAcc.Email = email;
                     patronAcc.UpdatedOn = DateTime.Now;
-                    _context.Update(patronAcc);
+                    var patronModel = patronAcc;
+                    _context.Update(patronModel);
                     await _context.SaveChangesAsync();
                 }
             }

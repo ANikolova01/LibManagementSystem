@@ -5,13 +5,14 @@
 }
 <div class="page-width">
 <h1>Library Branches</h1>
-
+@if(User.IsInRole("SuperAdmin")){
 <p>
     <a asp-action="Create" class="btn btn-outline-success">Create New</a>
 </p>
+}
 <div id="branches">
     <div id="branches-table"> 
-        <table class="ui celled table compact table-striped table-hover" id="catalogIndexTable">
+        <table class="ui celled table compact table-striped table-hover" id="branchesIndexTable">
             <thead>
                 <tr>
                     <th>
@@ -72,7 +73,9 @@
                         <div class="btn-group btn-group-sm" role="group">
                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary">Edit</a>
                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info">Details</a>
+                        @if(User.IsInRole("SuperAdmin")){
                         <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
+                        }
                         </div>
                     </td>
                 </tr>
@@ -96,7 +99,12 @@
 
     <script>
         $(document).ready(function () {
-            var table = $('#catalogIndexTable').DataTable();
+            var table = $('#branchesIndexTable').DataTable(                
+                {"columnDefs": [
+                { "orderable": false, "targets": [8] },
+                { "orderable": true, "targets": [0, 1, 2, 3, 4, 5, 6, 7] }
+            ]});
         });
+
     </script>
 }

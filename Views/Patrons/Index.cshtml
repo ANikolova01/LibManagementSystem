@@ -3,21 +3,15 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+<div class="page-width">
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-outline-success">Create New</a>
 </p>
-<table class="table">
+<table class="ui celled table compact table-striped table-hover" id="patronIndexTable">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedOn)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
@@ -49,12 +43,6 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedOn)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>
             <td>
@@ -79,11 +67,53 @@
                 @Html.DisplayFor(modelItem => item.AccountStatus)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            <div class="btn-group btn-group-sm" role="group">
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
+            </div>
             </td>
         </tr>
 }
     </tbody>
 </table>
+</div>
+
+@section Styles {
+    <link href="https://cdn.datatables.net/1.11.3/css/dataTables.semanticui.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet" type="text/css" />
+}
+
+@section Scripts {
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/dataTables.semanticui.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#patronIndexTable').DataTable(                
+                {"columnDefs": [
+                { "orderable": false, "targets": [7, 8] },
+                { "orderable": true, "targets": [0, 1, 2, 3, 4, 5, 6] }
+            ],
+            "createdRow": function( row, data, dataIndex){
+                if( data[7] ==  `Pending`){
+                    $(row).addClass('pending');
+                }
+                else if( data[7] == 'Approved'){
+                    $(row).removeClass('pending');
+                    $(row).addClass('approved');
+                }
+                else if( data[7] == 'Deactivated'){
+                    $(row).removeClass('pending');
+                    $(row).removeClass('approved');
+                    $(row).addClass('deactivated');
+                }
+            }
+        });
+        });
+
+    </script>
+}

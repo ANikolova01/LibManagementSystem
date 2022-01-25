@@ -33,7 +33,7 @@ namespace LibraryManagementSystem.Models
         public string Summary { get; set; }
         [Display(Name = "Book Cover")]
         public byte[] BookImage { get; set; }
-        public string AvailabilityStatus { get; set; }
+        public AvailabilityStatus AvailabilityStatus { get; set; }
 
         [Column(TypeName = "decimal(18,4)")]
         public decimal Cost { get; set; }

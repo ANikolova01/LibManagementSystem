@@ -6,6 +6,13 @@
 <div class="page-width">
 <header>
     <h1 class="text-danger">@ViewData["Title"]</h1>
-    <p class="text-danger">You do not have access to this resource.</p>
 </header>
+<div class="card text-white bg-danger mb-3" style="max-width: 60%;">
+  <div class="card-header">Warning</div>
+  <div class="card-body">
+    <h5 class="card-title">Access denied</h5>
+    <p class="card-text">You do not have access to this resource and/or page.</p>
+    <a class="btn btn-danger border" asp-area="" asp-controller="Home" asp-action="Index">Back to front page</a>
+  </div>
+</div>
 </div>

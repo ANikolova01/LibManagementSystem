@@ -22,7 +22,7 @@ namespace LibraryManagementSystem.Controllers
         // GET: BranchHours
         public async Task<IActionResult> Index()
         {
-            return View(await _context.BranchHours.ToListAsync());
+            return View(await _context.BranchHours.Include(h => h.Branch).ToListAsync());
         }
 
         // GET: BranchHours/Details/5
@@ -33,7 +33,7 @@ namespace LibraryManagementSystem.Controllers
                 return NotFound();
             }
 
-            var branchHours = await _context.BranchHours
+            var branchHours = await _context.BranchHours.Include(h => h.Branch)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (branchHours == null)
             {
@@ -54,17 +54,18 @@ namespace LibraryManagementSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DayOfWeek,OpenTime,CloseTime")] BranchHours branchHours)
+        public async Task<IActionResult> Create(BranchHours branchHours)
         {
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 var Branch = await _context.LibraryBranches.FirstOrDefaultAsync(b => b.Name == branchHours.Branch.Name);
                 branchHours.Branch = Branch;
-                _context.Add(branchHours);
+                BranchHours branchHoursModel = branchHours;
+                _context.Add(branchHoursModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(branchHours);
+            //}
+            //return View(branchHours);
         }
 
         // GET: BranchHours/Edit/5
@@ -75,7 +76,7 @@ namespace LibraryManagementSystem.Controllers
                 return NotFound();
             }
 
-            var branchHours = await _context.BranchHours.FindAsync(id);
+            var branchHours = await _context.BranchHours.Include(h => h.Branch).FirstOrDefaultAsync(h => h.Id == id);
             if (branchHours == null)
             {
                 return NotFound();
@@ -126,7 +127,7 @@ namespace LibraryManagementSystem.Controllers
                 return NotFound();
             }
 
-            var branchHours = await _context.BranchHours
+            var branchHours = await _context.BranchHours.Include(h => h.Branch)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (branchHours == null)
             {

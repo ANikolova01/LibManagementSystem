@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LibraryManagementSystem.Migrations
 {
-    public partial class AddedLibrary : Migration
+    public partial class AddedLibrarywithchangesv10 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,8 +46,7 @@ namespace LibraryManagementSystem.Migrations
                 name: "LibraryCards",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CurrentFees = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
                     Issued = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -69,11 +68,11 @@ namespace LibraryManagementSystem.Migrations
                     Publisher = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DeweyIndex = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Language = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NoOfPages = table.Column<int>(type: "int", nullable: false),
+                    NoOfPages_LengthTime = table.Column<int>(type: "int", nullable: false),
                     Genre = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Summary = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BookImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    AvailabilityStatusId = table.Column<int>(type: "int", nullable: true),
+                    AvailabilityStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Cost = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
                     LocationId = table.Column<int>(type: "int", nullable: true),
                     NumberOfCopies = table.Column<int>(type: "int", nullable: false),
@@ -84,19 +83,11 @@ namespace LibraryManagementSystem.Migrations
                 {
                     table.PrimaryKey("PK_Books", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Books_AvailabilityStatuses_AvailabilityStatusId",
-                        column: x => x.AvailabilityStatusId,
-                        principalTable: "AvailabilityStatuses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade,
-                        onUpdate: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Books_LibraryBranches_LocationId",
                         column: x => x.LocationId,
                         principalTable: "LibraryBranches",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade,
-                        onUpdate: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -118,16 +109,14 @@ namespace LibraryManagementSystem.Migrations
                         column: x => x.BranchId,
                         principalTable: "LibraryBranches",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade,
-                        onUpdate: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Patrons",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -136,7 +125,7 @@ namespace LibraryManagementSystem.Migrations
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Telephone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LibraryCardId = table.Column<int>(type: "int", nullable: true),
+                    LibraryCardId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     OverdueFees = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
                     HomeLibraryBranchId = table.Column<int>(type: "int", nullable: true),
                     AccountStatus = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -149,15 +138,13 @@ namespace LibraryManagementSystem.Migrations
                         column: x => x.HomeLibraryBranchId,
                         principalTable: "LibraryBranches",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade,
-                        onUpdate: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Patrons_LibraryCards_LibraryCardId",
                         column: x => x.LibraryCardId,
                         principalTable: "LibraryCards",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade,
-                        onUpdate: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -167,7 +154,7 @@ namespace LibraryManagementSystem.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BookId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    LibraryCardId = table.Column<int>(type: "int", nullable: true),
+                    LibraryCardId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CheckedOut = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CheckedIn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -179,15 +166,13 @@ namespace LibraryManagementSystem.Migrations
                         column: x => x.BookId,
                         principalTable: "Books",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade,
-                        onUpdate: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CheckoutHistories_LibraryCards_LibraryCardId",
                         column: x => x.LibraryCardId,
                         principalTable: "LibraryCards",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade,
-                        onUpdate: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -197,7 +182,7 @@ namespace LibraryManagementSystem.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BookId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    LibraryCardId = table.Column<int>(type: "int", nullable: true),
+                    LibraryCardId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CheckedOutSince = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CheckedOutUntil = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -209,15 +194,13 @@ namespace LibraryManagementSystem.Migrations
                         column: x => x.BookId,
                         principalTable: "Books",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade,
-                        onUpdate: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Checkouts_LibraryCards_LibraryCardId",
                         column: x => x.LibraryCardId,
                         principalTable: "LibraryCards",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade,
-                        onUpdate: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -229,7 +212,7 @@ namespace LibraryManagementSystem.Migrations
                     HoldPlaced = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     BookId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    LibraryCardId = table.Column<int>(type: "int", nullable: true),
+                    LibraryCardId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -240,15 +223,13 @@ namespace LibraryManagementSystem.Migrations
                         column: x => x.BookId,
                         principalTable: "Books",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade,
-                        onUpdate: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reservations_LibraryCards_LibraryCardId",
                         column: x => x.LibraryCardId,
                         principalTable: "LibraryCards",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade, 
-                        onUpdate: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
@@ -261,11 +242,6 @@ namespace LibraryManagementSystem.Migrations
                     { 3, "The item is in unknown whereabouts and condition.", "UNKNOWN_CONDITION" },
                     { 4, "The item has been destroyed.", "DESTROYED" }
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Books_AvailabilityStatusId",
-                table: "Books",
-                column: "AvailabilityStatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Books_LocationId",
@@ -321,6 +297,9 @@ namespace LibraryManagementSystem.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AvailabilityStatuses");
+
+            migrationBuilder.DropTable(
                 name: "BranchHours");
 
             migrationBuilder.DropTable(
@@ -340,9 +319,6 @@ namespace LibraryManagementSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "LibraryCards");
-
-            migrationBuilder.DropTable(
-                name: "AvailabilityStatuses");
 
             migrationBuilder.DropTable(
                 name: "LibraryBranches");

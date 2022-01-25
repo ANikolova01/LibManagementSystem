@@ -11,7 +11,7 @@ namespace LibraryManagementSystem.Models
     [Table("LibraryCards")]
     public class LibraryCard
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Column(TypeName = "decimal(18,4)")]
         [Display(Name = "Current Fees")]
