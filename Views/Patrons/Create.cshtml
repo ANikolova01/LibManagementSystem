@@ -3,11 +3,21 @@
 @{
     ViewData["Title"] = "Create";
 }
-
-<h1>Create</h1>
+<div class="page-width">
+<h2 class="header-color-create">Create a patron</h2>
 
 <h4>Patron</h4>
 <hr />
+<div class="alert alert-warning" role="alert">
+  <i class="fa-solid fa-square-exclamation pending-icon"></i><strong>Patron accounts can only be create manually for Patrons that do not wish to create an online account.</strong>
+</div>
+<div class="row">  
+<div class="col-md-12">  
+    <div class="form-group">  
+        @Html.Raw(@ViewBag.Alert)  
+    </div>  
+</div>  
+</div> 
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -59,8 +69,25 @@
             </div>
             <div class="form-group">
                 <label asp-for="AccountStatus" class="control-label"></label>
-                <input asp-for="AccountStatus" class="form-control" />
+                 <select asp-for="AccountStatus" class="form-control" id="accountStatusSelect1">
+@*                <input asp-for="AccountStatus" class="form-control" />*@
+                    <option class="pending" value="Pending">Pending</option>                    
+                    <option class="approved" value="Approved">Approved</option>
+                    <option class="deactivated" value="Deactivated">Deactivated</option>
+                </select>
                 <span asp-validation-for="AccountStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+            <label asp-for="HomeLibraryBranch.Name"></label>
+            <div class="input-group">
+            <select asp-for="HomeLibraryBranch.Name" class="form-control" id="exampleFormControlSelect1" placeholder="Home Library Branch" required>
+                <option value="" selected disabled>Please Select</option>
+                <option value="Downtown">Downtown</option>
+                <option value="Oakville">Oakville</option>
+                <option value="Pacific Branch">Pacific Branch</option>
+            </select>                
+            </div>    
+            <span asp-validation-for="HomeLibraryBranch.Name" class="alert-danger alert-text"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -70,7 +97,8 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
+</div>
 </div>
 
 @section Scripts {

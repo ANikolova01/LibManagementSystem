@@ -10,6 +10,7 @@ using LibraryManagementSystem.Data;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using LibraryManagementSystem.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryManagementSystem.Controllers
 {
@@ -54,6 +55,72 @@ namespace LibraryManagementSystem.Controllers
             return View(books.Where(b => b.Location.Name == "Pacific Branch"));
         }
 
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Checkout(Guid? id)
+        {
+            var checkouts = await _context.Checkouts.Include(c => c.Book).Where(c => c.Book.Id == id).ToListAsync();
+
+            var reservations = await _context.Reservation.Include(r => r.Book).Where(r => r.Book.Id == id).ToListAsync();
+            var book = await _context.Books.Include(b => b.Location).Include(b => b.AvailabilityStatus).FirstOrDefaultAsync(b => b.Id == id);
+            var patron = new Patron
+            {
+                Email = ""
+            };
+            var newCheckoutModel = new CheckoutFullModel
+            {
+                Book = book,
+                LibraryCard = null,
+                Patron = patron,
+                
+            };
+
+            return View(newCheckoutModel);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CheckIn(Guid? id)
+        {
+            //var checkouts = await _context.Checkouts.Include(c => c.Book).Where(c => c.Book.Id == id).ToListAsync();
+
+            //var reservations = await _context.Reservation.Include(r => r.Book).Where(r => r.Book.Id == id).ToListAsync();
+            var book = await _context.Books.Include(b => b.Location).Include(b => b.AvailabilityStatus).FirstOrDefaultAsync(b => b.Id == id);
+            var patron = new Patron
+            {
+                Email = ""
+            };
+            var newCheckoutModel = new CheckoutFullModel
+            {
+                Book = book,
+                LibraryCard = null,
+                Patron = patron,
+
+            };
+
+            return View(newCheckoutModel);
+        }
+
+        [Authorize(Roles = "Basic, Admin")]
+        public async Task<IActionResult> Reservation(Guid? id)
+        {
+            var checkouts = await _context.Checkouts.Include(c => c.Book).Where(c => c.Book.Id == id).ToListAsync();
+
+            var reservations = await _context.Reservation.Include(r => r.Book).Where(r => r.Book.Id == id).ToListAsync();
+            var book = await _context.Books.Include(b => b.Location).Include(b => b.AvailabilityStatus).FirstOrDefaultAsync(b => b.Id == id);
+            var patron = new Patron
+            {
+                Email = ""
+            };
+            var newReservationModel = new ReservationFullModel
+            {
+                Book = book,
+                LibraryCard = null,
+                Patron = patron,
+
+            };
+
+            return View(newReservationModel);
+        }
+
         // GET: Books/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
@@ -73,6 +140,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: Books/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -82,6 +150,7 @@ namespace LibraryManagementSystem.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Book book)
         {
@@ -127,6 +196,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: Books/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -146,6 +216,7 @@ namespace LibraryManagementSystem.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, Book book)
         {
@@ -210,6 +281,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: Books/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -229,6 +301,7 @@ namespace LibraryManagementSystem.Controllers
 
         // POST: Books/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {

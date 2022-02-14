@@ -1,16 +1,28 @@
-﻿@model LibraryManagementSystem.Models.Reservation
+﻿@model LibraryManagementSystem.Models.ReservationFullModel
 
 @{
     ViewData["Title"] = "Delete";
 }
-
-<h1>Delete</h1>
+<div class="page-width">
+<h2 class="header-color-delete">Delete a reservation</h2>
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
     <h4>Reservation</h4>
     <hr />
     <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Book.Title)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Book.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            Patron
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Patron.FirstName) @Html.DisplayFor(model => model.Patron.LastName)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.HoldPlaced)
         </dt>
@@ -33,7 +45,9 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Delete" class="btn btn-danger" /> 
+        <hr />
+    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
     </form>
+</div>
 </div>

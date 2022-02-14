@@ -126,7 +126,7 @@ namespace LibraryManagementSystem.Areas.Identity.Pages.Account.Manage
                     var patronAcc = user1.PatronAcc;
                     if (patronAcc != null)
                     {
-                        patronAcc.FirstName = firstName;
+                        patronAcc.FirstName = Input.FirstName;
                         patronAcc.UpdatedOn = DateTime.Now;
                         _context.Update(patronAcc);
                         await _context.SaveChangesAsync();
@@ -142,7 +142,7 @@ namespace LibraryManagementSystem.Areas.Identity.Pages.Account.Manage
                     var patronAcc = user1.PatronAcc;
                     if (patronAcc != null)
                     {
-                        patronAcc.LastName = lastName;
+                        patronAcc.LastName = Input.LastName;
                         patronAcc.UpdatedOn = DateTime.Now;
                         _context.Update(patronAcc);
                         await _context.SaveChangesAsync();
@@ -159,7 +159,7 @@ namespace LibraryManagementSystem.Areas.Identity.Pages.Account.Manage
                     var patronAcc = user1.PatronAcc;
                     if (patronAcc != null)
                     {
-                        patronAcc.DateOfBirth = dateOfBirth;
+                        patronAcc.DateOfBirth = Input.DateOfBirth;
                         patronAcc.UpdatedOn = DateTime.Now;
                         _context.Update(patronAcc);
                         await _context.SaveChangesAsync();
@@ -175,7 +175,7 @@ namespace LibraryManagementSystem.Areas.Identity.Pages.Account.Manage
                     var patronAcc = user1.PatronAcc;
                     if (patronAcc != null)
                     {
-                        patronAcc.Address = address;
+                        patronAcc.Address = Input.Address;
                         patronAcc.UpdatedOn = DateTime.Now;
                         _context.Update(patronAcc);
                         await _context.SaveChangesAsync();
@@ -192,7 +192,7 @@ namespace LibraryManagementSystem.Areas.Identity.Pages.Account.Manage
                 if (roles[0] == "Basic")
                 {
                     var patronAcc = user1.PatronAcc;
-                    var branch = await _context.LibraryBranches.AsNoTracking().FirstOrDefaultAsync(b => b.Name == homeLibraryBranch);
+                    var branch = await _context.LibraryBranches.AsNoTracking().FirstOrDefaultAsync(b => b.Name == Input.HomeLibraryBranch);
                     if (patronAcc != null)
                     {
                         patronAcc.HomeLibraryBranch = branch;
@@ -213,7 +213,7 @@ namespace LibraryManagementSystem.Areas.Identity.Pages.Account.Manage
                     var patronAcc = await _context.Patrons.FirstOrDefaultAsync(p => p.Id == user.PatronAcc.Id);
                     if (patronAcc != null)
                     {
-                        patronAcc.Telephone = phoneNumber;
+                        patronAcc.Telephone = Input.PhoneNumber;
                         patronAcc.UpdatedOn = DateTime.Now;
                         _context.Update(patronAcc);
                         await _context.SaveChangesAsync();

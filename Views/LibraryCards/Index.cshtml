@@ -7,9 +7,9 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-outline-success">Create New</a>
 </p>
-<table class="table">
+<table  class="ui celled table compact table-striped table-hover" id="libraryCardsIndexTable">
     <thead>
         <tr>
             <th>
@@ -31,12 +31,38 @@
                 @Html.DisplayFor(modelItem => item.Issued)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <div class="btn-group btn-group-sm" role="group">
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
+                </div>
             </td>
         </tr>
 }
     </tbody>
 </table>
 </div>
+
+@section Styles {
+    <link href="https://cdn.datatables.net/1.11.3/css/dataTables.semanticui.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet" type="text/css" />
+}
+
+@section Scripts {
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/dataTables.semanticui.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#libraryCardsIndexTable').DataTable(                
+                {"columnDefs": [
+                { "orderable": false, "targets": [2] },
+                { "orderable": true, "targets": [0, 1] }
+            ]});
+        });
+
+    </script>
+}

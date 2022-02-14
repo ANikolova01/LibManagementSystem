@@ -4,12 +4,23 @@
     ViewData["Title"] = "Delete";
 }
 <div class="page-width">
-<h1>Delete</h1>
+<h2 class="header-color delete">Delete Patron account</h2>
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
     <h4>Patron</h4>
     <hr />
+    <div class="row">
+    <div class="alert alert-danger" role="alert">
+      <h4 class="alert-heading">Deleting Patron account</h4>
+      <p>Before any patron account can be deleted, the Patron by then must return all books that they have borrowed from the library, as well as paid off 
+          any remaining debts and fees for borrowed books on their Library card. Otherwise it is not allowed for the Patron's account to be deleted. 
+          <strong>The patron's user account on the website must also be deleted before the patron's account along with their library card can be erased.</strong>
+      </p>
+      <hr>
+      <p class="mb-0">Make sure to check all the current checkouts in case there are any left on this Patron's library card.</p>
+    </div>
+    </div>
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CreatedOn)
@@ -72,11 +83,20 @@
             @Html.DisplayFor(model => model.AccountStatus)
         </dd>
     </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> 
-        <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
-    </form>
-</div>
+    @if(@Model.LibraryCard.Checkouts.Count() == 0 && @Model.OverdueFees == 0){
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Delete" class="btn btn-danger" /> 
+            <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
+        </form>
+        }
+        else
+        {
+         <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Delete" class="btn btn-danger" disabled/> 
+            <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
+        </form>
+        }
+    </div>
 </div>

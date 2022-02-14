@@ -5,6 +5,7 @@
 }
 <div class="page-width">
 <h1>@ViewData["Title"]</h1>
+<partial name="_StatusMessageWarning" model="Model.StatusMessage" />
 <div class="card border-success mb-3" style="position: relative">
     <div class="card-title text-success register-title">Create a new account.</div>
                 <hr />
@@ -99,11 +100,17 @@
                 <span asp-validation-for="Input.PhoneNumber" class="alert-danger alert-text"></span>
             </div>
             </div>
-                <button type="submit" class="form-row-align btn alert-success btn-lg">Register</button>
+            <div class="form-row-align">
+                <button type="submit" class="btn alert-success btn-lg">Register</button>
+            </div>
                 <br />
                 <br />
      </form>
     </div>
+<div>
+    <br/>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-info"><i class="fa fa-arrow-left"></i> Back Home</a>
+</div>
 </div>
 
 @section Styles {

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryManagementSystem.Controllers
 {
@@ -20,12 +21,14 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: BranchHours
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.BranchHours.Include(h => h.Branch).ToListAsync());
         }
 
         // GET: BranchHours/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,6 +47,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: BranchHours/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -53,6 +57,7 @@ namespace LibraryManagementSystem.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BranchHours branchHours)
         {
@@ -69,6 +74,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: BranchHours/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -88,6 +94,7 @@ namespace LibraryManagementSystem.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,DayOfWeek,OpenTime,CloseTime")] BranchHours branchHours)
         {
@@ -120,6 +127,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: BranchHours/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -138,6 +146,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // POST: BranchHours/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

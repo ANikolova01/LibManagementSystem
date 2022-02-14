@@ -3,9 +3,17 @@
 @{
     ViewData["Title"] = "Details";
 }
-
-<h1>Details</h1>
-
+<div class="page-width">
+<h2 class="header-color-details">Details for checkout history</h2>
+<div class="alert alert-info alert-dismissible fade show" role="alert">
+  <strong>Checkout Histories can only be viewed.</strong> 
+  <p>Any remaining Checkout History cannot be edited since it is an archived checkout from a user for a book that has since been returned or 
+      is classified in another specific status.
+  </p>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 <div>
     <h4>CheckoutHistory</h4>
     <hr />
@@ -25,6 +33,7 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a> 
+    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
+</div>
 </div>

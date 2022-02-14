@@ -156,12 +156,11 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+  height: 100%;
 }
 .footer {
   position: absolute;
-  bottom: 0;
+/*  bottom: 0;*/
   width: 100%;
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
@@ -201,6 +200,8 @@ dd.branch-details-info {
     border-color: #8fa5ff;
     /*    background-color: #fff1d9;
 */
+    padding-right: 20px;
+    width: 105%;
 }
 
 dt.book-details-desc {
@@ -281,6 +282,10 @@ dd.hours-details-info {
 .deactivated {
     background-color: #ff9d87 !important;
 }
+
+.overdue {
+    background-color: #ff9d87 !important;
+}
 .deactivated-icon {
     color: #ff6f4f !important;
 }
@@ -326,4 +331,87 @@ dd.hours-details-info {
 
 .form-row-align {
     padding-left: 15% !important;
+}
+
+.form-row-login {
+    padding-left: 27% !important;
+}
+
+.card-pos {
+    margin-left: 12.5% !important;
+}
+
+.card-checkout {
+    width: 100% !important;
+    margin-top: 2% !important;
+}
+
+.card-checkoutfont {
+    font-size: larger !important;
+    font-weight: bold !important;
+}
+
+.patron-details {
+    border-style: groove;
+    border-color: #1f9b8e;
+    /*    background-color: #fff1d9;
+*/
+}
+
+dt.patron-details-desc {
+    border-bottom-style: dashed;
+    border-color: #c6f691;
+}
+
+dd.patron-details-info {
+    border: 1px solid grey;
+    border-radius: 5px;
+}
+
+.pb-5 {
+    padding-bottom: 5%;
+}
+
+.footer-overlay {
+    position: relative !important;
+}
+
+.header-color-index {
+    color: #b2f27a;
+}
+
+.header-color-delete {
+    color: #a5042c;
+}
+
+.header-color-details {
+    color: #1f9b8e;
+}
+
+.header-color-edit {
+    color: #ddbb54;
+}
+
+.header-color-create {
+    color: #74c635;
+}
+
+.disabled-link {
+    pointer-events: none;
+}
+
+.mt-table {
+    margin-top: 3%;
+}
+
+.footer-index {
+    bottom: -15% !important;
+}
+
+.padding-extra {
+    padding-bottom: 20% !important;
+}
+
+.padding-extra1 {
+    padding-bottom: 5% !important;
 }

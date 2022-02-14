@@ -1,30 +1,60 @@
-﻿@model LibraryManagementSystem.Models.Reservation
+﻿@model LibraryManagementSystem.Models.ReservationFullModel
 
 @{
     ViewData["Title"] = "Create";
 }
-
+<div class="page-width">
 <h1>Create</h1>
 
 <h4>Reservation</h4>
 <hr />
+<div class="row">  
+    <div class="col-md-12">  
+        <div class="form-group">  
+            @Html.Raw(@ViewBag.Alert)  
+        </div>  
+    </div>  
+</div> 
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="Patron.FirstName" class="control-label"></label>
+                <input asp-for="Patron.FirstName" class="form-control" />
+                <span asp-validation-for="Patron.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Patron.LastName" class="control-label"></label>
+                <input asp-for="Patron.LastName" class="form-control" />
+                <span asp-validation-for="Patron.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Patron.Email" class="control-label"></label>
+                <input asp-for="Patron.Email" class="form-control" />
+                <span asp-validation-for="Patron.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Book.Title" class="control-label"></label>
+                <input asp-for="Book.Title" class="form-control" />
+                <span asp-validation-for="Book.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="HoldPlaced" class="control-label"></label>
                 <input asp-for="HoldPlaced" class="form-control" />
                 <span asp-validation-for="HoldPlaced" class="text-danger"></span>
             </div>
-            <div class="form-group">
+@*            <div class="form-group">
                 <label asp-for="UpdatedOn" class="control-label"></label>
                 <input asp-for="UpdatedOn" class="form-control" />
                 <span asp-validation-for="UpdatedOn" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
+                <select asp-for="Status" class="form-control" id="statusSelect1">
+                    <option value="Active">Active</option>
+                    <option value="Past due">Past due</option>
+                </select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -35,9 +65,9 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
 </div>
-
+</div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

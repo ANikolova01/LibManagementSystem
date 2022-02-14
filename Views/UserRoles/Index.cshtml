@@ -28,6 +28,7 @@
                 <td>@string.Join(" , ", user.Roles.ToList())</td>
                 <td>
                     <a class="btn btn-outline-primary" asp-controller="UserRoles" asp-action="Manage" asp-route-userId="@user.UserId">Manage Roles</a>
+                    <a class="btn btn-outline-danger" asp-controller="UserRoles" asp-action="Delete" asp-route-userId="@user.UserId">Delete User</a>
                 </td>
             </tr>
             }

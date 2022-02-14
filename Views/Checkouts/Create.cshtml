@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 <div class="page-width">
-<h1>Create</h1>
+<h2 class="header-color-create">Create</h2>
 
 <h4>Checkout</h4>
 <hr />
@@ -28,6 +28,11 @@
                 <label asp-for="Patron.LastName" class="control-label"></label>
                 <input asp-for="Patron.LastName" class="form-control" />
                 <span asp-validation-for="Patron.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Patron.Email" class="control-label"></label>
+                <input asp-for="Patron.Email" class="form-control" />
+                <span asp-validation-for="Patron.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Book.Title" class="control-label"></label>

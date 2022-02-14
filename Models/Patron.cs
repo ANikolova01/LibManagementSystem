@@ -27,6 +27,7 @@ namespace LibraryManagementSystem.Models
         public string Address { get; set; }
         [Required]
         [Display(Name = "Date Of Birth")]
+        [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
         [Required]
         [Display(Name = "Email")]

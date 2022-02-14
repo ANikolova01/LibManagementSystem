@@ -44,6 +44,9 @@
                                 <a class="dropdown-item" asp-area="" asp-controller="Checkouts" asp-action="Index">Checkouts</a>                            
                                 <a class="dropdown-item" asp-area="" asp-controller="LibraryBranches" asp-action="Index">Branches</a>                            
                                 <a class="dropdown-item" asp-area="" asp-controller="BranchHours" asp-action="Index">Branch Hours</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="CheckoutHistories" asp-action="Index">Checkout Histories</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Reservations" asp-action="Index">Reservations</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="LibraryCards" asp-action="Index">Library Cards</a>
                             </div>
                         </li>
                     }
@@ -53,6 +56,11 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="UserRoles" asp-action="Index">User Roles</a>
                             </li>
                         }
+                    @if (User.IsInRole("Basic") && !(User.IsInRole("Admin")) && !(User.IsInRole("SuperAdmin"))) {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Patrons" asp-action="DetailsUser">Library Account Details</a>
+                            </li>
+                    }
                     </ul>
                 </div>
             </div>
@@ -64,7 +72,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer id="footer" class="border-top footer text-muted navbar-fixed-bottom">
         <div class="container">
             &copy; 2021 - LibraryManagementSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
@@ -78,3 +86,15 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
+@section Scripts {
+    <script>
+        var pathname = window.location.href; 
+        const myArray = pathname.split("/");
+        const index = myArray[myArray.length - 1];
+    if (index == "Books" || index == "Patrons" || index == "Reservations" || index == "LibraryCards" || index == "BranchHours"
+    || index == "CheckoutHistories" || index == "Checkouts" || index == "Index1" || index == "Index2" || index == "Index3") {
+        $(document.querySelector('#footer')).addClass('footer-index');
+      }
+    </script>
+}

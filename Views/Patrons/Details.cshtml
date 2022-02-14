@@ -1,79 +1,188 @@
-﻿@model LibraryManagementSystem.Models.Patron
+﻿@model LibraryManagementSystem.Models.PatronFullModel
 
 @{
     ViewData["Title"] = "Details";
 }
 <div class="page-width">
-<h1>Details</h1>
+<h2 class="header-color-details">Details for Patron</h2>
 
-<div>
     <h4>Patron</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedOn)
+<div class="row patron-details">
+    <dl class="col-sm-6" style="width:50%">
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.CreatedOn)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedOn)
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.CreatedOn)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedOn)
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.UpdatedOn)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedOn)
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.UpdatedOn)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.FirstName)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.FirstName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.LastName)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.LastName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.Address)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.Address)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateOfBirth)
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.DateOfBirth)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateOfBirth)
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.DateOfBirth)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.Email)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.Email)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Telephone)
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.Telephone)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Telephone)
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.Telephone)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OverdueFees)
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.OverdueFees)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OverdueFees)
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.OverdueFees)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AccountStatus)
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.AccountStatus)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AccountStatus)
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.AccountStatus)
         </dd>
     </dl>
+
+    <div class="col-sm-5 mt-table">
+        <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
+            <thead>
+                <tr>
+                    <th>Book Title</th>
+                    <th>Checked Out Since</th>
+                    <th>Checked Out Until</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var checkout in @Model.Patron.LibraryCard.Checkouts)
+            {
+                <tr>
+                    <td>
+                        @checkout.Book.Title
+                    </td>
+                    <td>
+                        @checkout.CheckedOutSince
+                    </td>
+                    <td>
+                        @checkout.CheckedOutUntil
+                    </td>
+                    <td>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a asp-action="Edit" asp-controller="Checkouts" asp-route-id="@checkout.Id" class="btn btn-outline-primary">Edit</a>
+                        <a asp-action="Details" asp-controller="Checkouts" asp-route-id="@checkout.Id" class="btn btn-outline-info">Details</a>
+                        <a asp-action="Delete" asp-controller="Checkouts" asp-route-id="@checkout.Id" class="btn btn-outline-danger">Delete</a>
+                    </div>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <br />
+        <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
+            <thead>
+                <tr>
+                    <th>Book Title</th>
+                    <th>Checked Out</th>
+                    <th>Checked In</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var checkouthistory in @Model.CheckoutHistory)
+            {
+                <tr>
+                    <td>
+                        @checkouthistory.Book.Title
+                    </td>
+                    <td>
+                        @checkouthistory.CheckedOut
+                    </td>
+                    <td>
+                        @checkouthistory.CheckedIn
+                    </td>
+                    <td>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a asp-action="Edit" asp-controller="CheckoutHistories" asp-route-id="@checkouthistory.Id" class="btn btn-outline-primary">Edit</a>
+                        <a asp-action="Details" asp-controller="CheckoutHistories" asp-route-id="@checkouthistory.Id" class="btn btn-outline-info">Details</a>
+                        <a asp-action="Delete" asp-controller="CheckoutHistories" asp-route-id="@checkouthistory.Id" class="btn btn-outline-danger">Delete</a>
+                    </div>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <br />
+        <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
+            <thead>
+                <tr>
+                    <th>Book Title</th>
+                    <th>Checked Out Since</th>
+                    <th>Checked Out Until</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var reservation in @Model.Reservations)
+            {
+                <tr>
+                    <td>
+                        @reservation.Book.Title
+                    </td>
+                    <td>
+                        @reservation.HoldPlaced
+                    </td>
+                    <td>
+                        @reservation.UpdatedOn
+                    </td>
+                    <td>
+                        @reservation.Status
+                    </td>
+                    <td>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a asp-action="Edit" asp-controller="Reservations" asp-route-id="@reservation.Id" class="btn btn-outline-primary">Edit</a>
+                        <a asp-action="Details" asp-controller="Reservations" asp-route-id="@reservation.Id" class="btn btn-outline-info">Details</a>
+                        <a asp-action="Delete" asp-controller="Reservations" asp-route-id="@reservation.Id" class="btn btn-outline-danger">Delete</a>
+                    </div>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a> 
+<div class="mt-table">
+    <a asp-action="Edit" asp-route-id="@Model.Patron.Id" class="btn btn-primary">Edit</a> 
     <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
+
+
 </div>
 </div>

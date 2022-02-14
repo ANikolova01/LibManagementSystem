@@ -107,6 +107,26 @@ namespace LibraryManagementSystem.Migrations.ApplicationDb
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("LibraryManagementSystem.Models.AvailabilityStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AvailabilityStatuses");
+                });
+
             modelBuilder.Entity("LibraryManagementSystem.Models.Book", b =>
                 {
                     b.Property<Guid>("Id")
@@ -117,8 +137,8 @@ namespace LibraryManagementSystem.Migrations.ApplicationDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AvailabilityStatus")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("AvailabilityStatusId")
+                        .HasColumnType("int");
 
                     b.Property<byte[]>("BookImage")
                         .HasColumnType("varbinary(max)");
@@ -171,6 +191,8 @@ namespace LibraryManagementSystem.Migrations.ApplicationDb
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AvailabilityStatusId");
 
                     b.HasIndex("LocationId");
 
@@ -465,9 +487,15 @@ namespace LibraryManagementSystem.Migrations.ApplicationDb
 
             modelBuilder.Entity("LibraryManagementSystem.Models.Book", b =>
                 {
+                    b.HasOne("LibraryManagementSystem.Models.AvailabilityStatus", "AvailabilityStatus")
+                        .WithMany()
+                        .HasForeignKey("AvailabilityStatusId");
+
                     b.HasOne("LibraryManagementSystem.Models.LibraryBranch", "Location")
                         .WithMany("LibraryBooks")
                         .HasForeignKey("LocationId");
+
+                    b.Navigation("AvailabilityStatus");
 
                     b.Navigation("Location");
                 });

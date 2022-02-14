@@ -98,5 +98,49 @@ namespace LibraryManagementSystem.Controllers
             }
             return RedirectToAction("Index");
         }
-    }
+
+        // GET: Patrons/Delete/5
+        [Authorize(Roles = "SuperAdmin")]
+        public async Task<IActionResult> Delete(string userId)
+        {
+            if (userId == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return View();
+            }
+
+            return View(user);
+        }
+
+        // POST: Patrons/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "SuperAdmin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return View();
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var result = await _userManager.RemoveFromRolesAsync(user, roles);
+
+            if (result.Succeeded)
+            {
+                await _userManager.DeleteAsync(user);
+            }
+
+
+            return RedirectToAction(nameof(Index));
+        }
+
+}
 }

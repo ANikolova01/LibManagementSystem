@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Data;
+using LibraryManagementSystem.Models.Enums;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryManagementSystem.Controllers
 {
@@ -20,12 +22,14 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: LibraryCards
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.LibraryCards.ToListAsync());
         }
 
         // GET: LibraryCards/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -35,15 +39,25 @@ namespace LibraryManagementSystem.Controllers
 
             var libraryCard = await _context.LibraryCards
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+           
             if (libraryCard == null)
             {
                 return NotFound();
             }
+            var patron = await _context.Patrons.Include(p => p.LibraryCard).FirstOrDefaultAsync(p => p.LibraryCard.Id == id);
 
-            return View(libraryCard);
+            LibraryCardFullModel libraryCardModel = new LibraryCardFullModel()
+            {
+                LibraryCard = libraryCard,
+                Patron = patron,
+            };
+
+            return View(libraryCardModel);
         }
 
         // GET: LibraryCards/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -54,20 +68,41 @@ namespace LibraryManagementSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CurrentFees,Issued")] LibraryCard libraryCard)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Create(LibraryCardFullModel libraryCardModel)
         {
-            if (ModelState.IsValid)
+            var patron = await _context.Patrons.Include(p => p.HomeLibraryBranch).Include(p => p.LibraryCard).FirstOrDefaultAsync(p => p.Email == libraryCardModel.Patron.Email);
+
+            if (patron == null)
             {
-                libraryCard.Id = new Guid();
-                _context.Add(libraryCard);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+               return View(libraryCardModel);
             }
-            return View(libraryCard);
+            else if(patron.LibraryCard != null)
+            {
+                ViewBag.Alert = CommonServices.ShowAlert(Alerts.Danger, "Patron already has Library Card!");
+                return View(libraryCardModel);
+            }
+            var libraryCard = new LibraryCard()
+            {
+                Id = new Guid(),
+                CurrentFees = 0,
+                Issued = libraryCardModel.LibraryCard.Issued
+            };
+
+            patron.LibraryCard = libraryCard;
+            patron.OverdueFees -= 10;
+            patron.AccountStatus = "Approved";
+            _context.Add(libraryCard);
+            _context.Update(patron);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
+          //  return View(libraryCard);
         }
 
         // GET: LibraryCards/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
@@ -79,7 +114,14 @@ namespace LibraryManagementSystem.Controllers
             {
                 return NotFound();
             }
-            return View(libraryCard);
+            var patron = await _context.Patrons.Include(p => p.LibraryCard).FirstOrDefaultAsync(p => p.LibraryCard.Id == id);
+
+            var libraryCardModel = new LibraryCardFullModel
+            {
+                LibraryCard = libraryCard,
+                Patron = patron
+            };
+            return View(libraryCardModel);
         }
 
         // POST: LibraryCards/Edit/5
@@ -87,15 +129,24 @@ namespace LibraryManagementSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,CurrentFees,Issued")] LibraryCard libraryCard)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(Guid id, LibraryCardFullModel libraryCardModel)
         {
-            if (id != libraryCard.Id)
+            if (id != libraryCardModel.LibraryCard.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            LibraryCard libraryCard = new LibraryCard
             {
+                Id = libraryCardModel.LibraryCard.Id,
+                Issued = libraryCardModel.LibraryCard.Issued,
+                CurrentFees = libraryCardModel.LibraryCard.CurrentFees,
+
+            };
+
+            //if (ModelState.IsValid)
+            //{
                 try
                 {
                     _context.Update(libraryCard);
@@ -113,11 +164,12 @@ namespace LibraryManagementSystem.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(libraryCard);
+            //}
+            //return View(libraryCard);
         }
 
         // GET: LibraryCards/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -132,13 +184,22 @@ namespace LibraryManagementSystem.Controllers
                 return NotFound();
             }
 
-            return View(libraryCard);
+            var patron = await _context.Patrons.Include(p => p.LibraryCard).Include(p => p.HomeLibraryBranch).FirstOrDefaultAsync(p => p.LibraryCard.Id == id);
+
+            LibraryCardFullModel libraryCardModel = new LibraryCardFullModel
+            {
+                Patron = patron,
+                LibraryCard = libraryCard,
+            };
+
+            return View(libraryCardModel);
         }
 
         // POST: LibraryCards/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var libraryCard = await _context.LibraryCards.FindAsync(id);
             _context.LibraryCards.Remove(libraryCard);

@@ -7,25 +7,32 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Data;
+using Microsoft.AspNetCore.Identity;
+using LibraryManagementSystem.Models.Enums;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryManagementSystem.Controllers
 {
     public class PatronsController : Controller
     {
         private readonly LibraryDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public PatronsController(LibraryDbContext context)
+        public PatronsController(LibraryDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Patrons
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Patrons.Include(p => p.LibraryCard).Include(p => p.HomeLibraryBranch).ToListAsync());
         }
 
         // GET: Patrons/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -33,17 +40,56 @@ namespace LibraryManagementSystem.Controllers
                 return NotFound();
             }
 
-            var patron = await _context.Patrons
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var patron = await _context.Patrons.Include(p => p.LibraryCard).ThenInclude(l => l.Checkouts).ThenInclude(c => c.Book).FirstOrDefaultAsync(m => m.Id == id);
+            var checkoutHistory = await _context.CheckoutHistories.Include(c => c.Book).Include(c => c.LibraryCard).Where(c => c.LibraryCard.Id == patron.LibraryCard.Id).ToListAsync();
+            var reservations = await _context.Reservation.Include(c => c.Book).Include(c => c.LibraryCard).Where(r => r.LibraryCard.Id == patron.LibraryCard.Id).ToListAsync();
+
             if (patron == null)
             {
                 return NotFound();
             }
 
-            return View(patron);
+            PatronFullModel patronModel = new PatronFullModel
+            {
+                Patron = patron,
+                CheckoutHistory = checkoutHistory,
+                Reservations = reservations
+            };
+
+            return View(patronModel);
+        }
+
+        // GET: Patrons/Details/5
+        [Authorize(Roles = "Basic")]
+        public async Task<IActionResult> DetailsUser()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var patron = await _context.Patrons.Include(p => p.LibraryCard).ThenInclude(l => l.Checkouts).ThenInclude(c => c.Book).FirstOrDefaultAsync(p => p.Email == user.Email);
+            var checkoutHistory = await _context.CheckoutHistories.Include(c => c.Book).Include(c => c.LibraryCard).Where(c => c.LibraryCard.Id == patron.LibraryCard.Id).ToListAsync();
+            var reservations = await _context.Reservation.Include(c => c.Book).Include(c => c.LibraryCard).Where(r => r.LibraryCard.Id == patron.LibraryCard.Id).ToListAsync();
+
+            if (patron == null)
+            {
+                return NotFound();
+            }
+
+            PatronFullModel patronModel = new PatronFullModel
+            {
+                Patron = patron,
+                CheckoutHistory = checkoutHistory,
+                Reservations = reservations
+            };
+
+            return View(patronModel);
         }
 
         // GET: Patrons/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -54,19 +100,41 @@ namespace LibraryManagementSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("Id,CreatedOn,UpdatedOn,FirstName,LastName,Address,DateOfBirth,Email,Telephone,OverdueFees,AccountStatus")] Patron patron)
         {
-            if (ModelState.IsValid)
-            {
+            //patron.LibraryCard = new LibraryCard
+            //{
+            //    Id = Guid.Empty,
+               
+            //};
+            //if (ModelState.IsValid)
+            //{
                 patron.Id = new Guid();
+
+                var patronCheck = await _context.Patrons.FirstOrDefaultAsync(p => p.Email == patron.Email);
+
+                if(patronCheck != null)
+                {
+                    ViewBag.Alert = CommonServices.ShowAlert(Alerts.Danger, "Patron already exists!");
+                    return View(patron);
+                }
+
+                var libraryBranch = await _context.LibraryBranches.FirstOrDefaultAsync(b => b.Name == patron.HomeLibraryBranch.Name);
+                if(libraryBranch != null)
+                {
+                    patron.HomeLibraryBranch = libraryBranch;
+                }
+
                 _context.Add(patron);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(patron);
+            //}
+            //return View(patron);
         }
 
         // GET: Patrons/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -74,7 +142,7 @@ namespace LibraryManagementSystem.Controllers
                 return NotFound();
             }
 
-            var patron = _context.Patrons.Include(p => p.HomeLibraryBranch).Include(p => p.LibraryCard).FirstOrDefault(p => p.Id == id);
+            var patron = await _context.Patrons.Include(p => p.HomeLibraryBranch).Include(p => p.LibraryCard).FirstOrDefaultAsync(p => p.Id == id);
             if (patron == null)
             {
                 return NotFound();
@@ -87,6 +155,7 @@ namespace LibraryManagementSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(Guid id, Patron patron)
         {
             
@@ -123,6 +192,11 @@ namespace LibraryManagementSystem.Controllers
                 patron.AccountStatus = "Deactivated";
 
             }
+            else if(patronFound.AccountStatus != "Pending" && patron.AccountStatus == "Pending")
+            {
+                patron.OverdueFees += 10;
+                patron.AccountStatus = "Pending";
+            }
 
             Patron patronModel = patron;
 
@@ -150,6 +224,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: Patrons/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -157,7 +232,7 @@ namespace LibraryManagementSystem.Controllers
                 return NotFound();
             }
 
-            var patron = await _context.Patrons
+            var patron = await _context.Patrons.Include(p => p.LibraryCard).ThenInclude(l => l.Checkouts)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (patron == null)
             {
@@ -169,11 +244,23 @@ namespace LibraryManagementSystem.Controllers
 
         // POST: Patrons/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var patron = await _context.Patrons.FindAsync(id);
+            var patron = await _context.Patrons.Include(p => p.LibraryCard).ThenInclude(l => l.Checkouts).FirstOrDefaultAsync(p => p.Id == id);
+            var libraryCard = await _context.LibraryCards.FirstOrDefaultAsync(l => l.Id == patron.LibraryCard.Id);
+            var checkouts = await _context.Checkouts.Where(c => c.LibraryCard.Id == libraryCard.Id).ToListAsync();
+            var checkoutHistory = await _context.CheckoutHistories.Where(c => c.LibraryCard.Id == libraryCard.Id).ToListAsync();
+            var reservations = await _context.Reservation.Where(c => c.LibraryCard.Id == libraryCard.Id).ToListAsync();
+
+
             _context.Patrons.Remove(patron);
+            _context.LibraryCards.Remove(libraryCard);
+            _context.Checkouts.RemoveRange(checkouts);
+            _context.CheckoutHistories.RemoveRange(checkoutHistory);
+            _context.Reservation.RemoveRange(reservations);
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

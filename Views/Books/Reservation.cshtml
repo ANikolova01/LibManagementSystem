@@ -1,0 +1,59 @@
+﻿@using LibraryManagementSystem.Models
+@model LibraryManagementSystem.Models.ReservationFullModel
+@{
+    ViewData["Title"] = "Checkout "+ @Model.Book.Title;
+}
+
+@*@model is the model directive*@
+
+<div class="page-width">
+
+<div class="container">
+    <div class="header clearfix detailHeading">
+        <h2 class="text-muted">Reserve Library Item</h2>
+    </div>
+    <div class="row">  
+    <div class="col-md-12">  
+        <div class="form-group">  
+            @Html.Raw(@ViewBag.Alert)  
+        </div>  
+    </div>  
+    </div> 
+    <div class="card card-checkout">
+        <div class="card-body">
+        <div class="card-title card-checkoutfont" id="itemTitle">@Model.Book.Title</div>
+        <div class="row">
+        <div class="col-md-3">
+            <div>
+                <img src="data:image;base64,@System.Convert.ToBase64String(Model.Book.BookImage)" width="240" height="390"/>  
+            </div>
+        </div>
+        @*you could also use tag helpers.*@
+        <div class="col-md-9">
+            @*this is an html helper - it creates an object that implements idisposable*@
+            @using (Html.BeginForm("Reserve", "Reservations", FormMethod.Post))
+            {
+                @Html.HiddenFor(c => c.Book.Id)
+                <div class="form-group row">
+                    <label for="patronEmail" class="col-sm-3">Please insert a Patron's email.</label>
+                    <div class="col-sm-6">
+                    <input asp-for="Patron.Email" type="email" class="form-control" id="patronEmail" aria-describedby="emailHelp" placeholder="Enter email">
+                    @*write out a text box and set attributes according to info in the model*@
+                </div>
+                </div>
+                <div>
+                    <hr />
+                        <form asp-action="Reserve" asp-controller="Reservations">
+                        <input type="hidden"/>
+                        <input type="submit" value="Reserve" class="btn btn-info btn-lg" />
+                    </form>
+                </div>
+            }
+        </div>
+        </div>
+        </div>
+    </div>
+    <br/>
+    <a asp-action="Index" asp-controller="Books" class="btn btn-outline-info">Back to List</a>
+</div>
+</div>

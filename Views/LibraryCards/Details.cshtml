@@ -1,9 +1,9 @@
-﻿@model LibraryManagementSystem.Models.LibraryCard
+﻿@model LibraryManagementSystem.Models.LibraryCardFullModel
 
 @{
     ViewData["Title"] = "Details";
 }
-
+<div class="page-width">
 <h1>Details</h1>
 
 <div>
@@ -11,20 +11,33 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CurrentFees)
+            @Html.DisplayNameFor(model => model.Patron.FirstName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CurrentFees)
+            @Html.DisplayFor(model => model.Patron.FirstName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Issued)
+            @Html.DisplayNameFor(model => model.Patron.LastName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Issued)
+            @Html.DisplayFor(model => model.Patron.LastName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LibraryCard.CurrentFees)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LibraryCard.CurrentFees)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LibraryCard.Issued)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LibraryCard.Issued)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" class="btn btn-outline-success" asp-route-id="@Model.LibraryCard.Id">Edit</a> 
+    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
+</div>
 </div>

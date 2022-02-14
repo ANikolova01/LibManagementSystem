@@ -1,10 +1,10 @@
-﻿@model LibraryManagementSystem.Models.Checkout
+﻿@model LibraryManagementSystem.Models.CheckoutFullModel
 
 @{
     ViewData["Title"] = "Edit";
 }
-
-<h1>Edit</h1>
+<div class="page-width">
+<h2 class="header-color-edit">Edit</h2>
 
 <h4>Checkout</h4>
 <hr />
@@ -14,14 +14,39 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
+                <label asp-for="Book.Title" class="control-label"></label>
+                <div type="date" class="input-group">
+                <input asp-for="Book.Title" class="form-control" disabled/>
+                </div>
+                <span asp-validation-for="Book.Title" class="alert-danger alert-text"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Patron.FirstName" class="control-label"></label>
+                <div type="date" class="input-group">
+                <input asp-for="Patron.FirstName" class="form-control" disabled/>
+                </div>
+                <span asp-validation-for="Patron.FirstName" class="alert-danger alert-text"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Patron.LastName" class="control-label"></label>
+                <div type="date" class="input-group">
+                <input asp-for="Patron.LastName" class="form-control" disabled/>
+                </div>
+                <span asp-validation-for="Patron.LastName" class="alert-danger alert-text"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="CheckedOutSince" class="control-label"></label>
-                <input asp-for="CheckedOutSince" class="form-control" />
-                <span asp-validation-for="CheckedOutSince" class="text-danger"></span>
+                <div class="input-group">
+                <input type="datetime-local" asp-for="CheckedOutSince" class="form-control" />
+                </div>
+                <span asp-validation-for="CheckedOutSince" class="alert-danger alert-text"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CheckedOutUntil" class="control-label"></label>
-                <input asp-for="CheckedOutUntil" class="form-control" />
-                <span asp-validation-for="CheckedOutUntil" class="text-danger"></span>
+                <div class="input-group">
+                <input type="datetime-local" asp-for="CheckedOutUntil" class="form-control" />
+                </div>
+                <span asp-validation-for="CheckedOutUntil" class="alert-danger alert-text"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -31,9 +56,18 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
+    <hr />
 
+    <form asp-action="CheckIn">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="CheckIn" class="btn alert-success btn-lg" />
+        <hr />
+    </form>
+
+
+</div>
+</div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

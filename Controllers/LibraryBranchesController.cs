@@ -9,6 +9,8 @@ using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Data;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using LibraryManagementSystem.Models.Enums;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryManagementSystem.Controllers
 {
@@ -41,17 +43,61 @@ namespace LibraryManagementSystem.Controllers
                 return NotFound();
             }
 
-            var libraryBranch = await _context.LibraryBranches
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var libraryBranch = await _context.LibraryBranches.FirstOrDefaultAsync(m => m.Id == id);
+            var branchHours = await _context.BranchHours.Include(b => b.Branch).ToListAsync();
+            var branchHoursLib = new List<BranchHours>();
+
+            foreach(BranchHours branchHour in branchHours)
+            {
+                if(branchHour.Branch.Id == id)
+                {
+                    branchHoursLib.Add(branchHour);
+                }
+            }
+
+            var patronsCount = await _context.Patrons.CountAsync();
+
+            libraryBranch.NumberOfPatrons = patronsCount;
             if (libraryBranch == null)
             {
                 return NotFound();
             }
+            if(patronsCount > libraryBranch.NumberOfPatrons)
+            {
+                _context.Update(libraryBranch);
+                await _context.SaveChangesAsync();
+            }
+            var branchHoursModel = new BranchHoursModel
+            {
+                Branch = libraryBranch,
+                BranchHours = branchHoursLib
+            };
+            this.addBranchHoursBanner(branchHoursModel);
+            return View(branchHoursModel);
+        }
+        public void addBranchHoursBanner(BranchHoursModel branchHoursModel)
+        {
+            var dayCurrent = ((int)DateTime.Now.DayOfWeek);
+            if(branchHoursModel.BranchHours != null)
+            {
+            var workingDayCheck = branchHoursModel.BranchHours.FirstOrDefault(b => b.DayOfWeek == (dayCurrent - 1));
+            if(workingDayCheck != null)
+                {
+                var timeNow = DateTime.Now.Hour;
+                if(timeNow > workingDayCheck.OpenTime && timeNow < workingDayCheck.CloseTime)
+                { ViewBag.Alert = CommonServices.ShowAlert(Alerts.Success, "This library branch is currently open!");  }
+                 else ViewBag.Alert = CommonServices.ShowAlert(Alerts.Warning, "This Library branch is currently closed!");
+                }
+                else
+                {
+                    ViewBag.Alert = CommonServices.ShowAlert(Alerts.Warning, "This Library branch is currently closed!");
+                }
+            }
 
-            return View(libraryBranch);
         }
 
         // GET: LibraryBranches/Create
+        [Authorize(Roles = "SuperAdmin")]
         public IActionResult Create()
         {
             return View();
@@ -62,6 +108,7 @@ namespace LibraryManagementSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Create([Bind("Id,Name,Address,Telephone,Description,OpenDate,NumberOfPatrons,NumberOfAssets,TotalAssetValue,BranchImage")] LibraryBranch libraryBranch)
         {
             if (Request.Form.Files.Count > 0)
@@ -83,6 +130,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: LibraryBranches/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -103,6 +151,7 @@ namespace LibraryManagementSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Address,Telephone,Description,OpenDate,NumberOfPatrons,NumberOfAssets,TotalAssetValue,BranchImage")] LibraryBranch libraryBranch)
         {
             if (id != libraryBranch.Id)
@@ -153,6 +202,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: LibraryBranches/Delete/5
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -173,6 +223,7 @@ namespace LibraryManagementSystem.Controllers
         // POST: LibraryBranches/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var libraryBranch = await _context.LibraryBranches.FindAsync(id);

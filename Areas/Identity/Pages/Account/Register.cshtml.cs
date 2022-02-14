@@ -66,7 +66,6 @@ namespace LibraryManagementSystem.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Username")]
-            [Remote("doesUserNameExist", "Account", HttpMethod = "POST", ErrorMessage = "User name already exists. Please enter a different user name.")]
             public string UserName { get; set; }
             [Required]
             [EmailAddress]
@@ -116,9 +115,14 @@ namespace LibraryManagementSystem.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             var userCheck = await _userManager.FindByNameAsync(Input.UserName);
+            var mailCheck = await _userManager.FindByEmailAsync(Input.Email);
             if(userCheck != null)
             {
                 StatusMessage = "Username is already in use. Select a different username.";
+                return RedirectToPage();
+            }
+            else if(mailCheck != null) {
+                StatusMessage = "Email is already in use. Select a different email.";
                 return RedirectToPage();
             }
             if (ModelState.IsValid)

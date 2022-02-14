@@ -4,7 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 <div class="page-width">
-<h1>Edit</h1>
+<h2 class="header-color-edit">Edit for branch hour</h2>
 
 <h4>BranchHours</h4>
     <hr />
@@ -13,7 +13,6 @@
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" />
-
                 <div class="form-group">
                     <label asp-for="Branch.Name" class="control-label"></label>
                     <input asp-for="Branch.Name" class="form-control" />

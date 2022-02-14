@@ -1,0 +1,169 @@
+﻿@model LibraryManagementSystem.Models.PatronFullModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="page-width">
+<h2 class="header-color-details">Details for Patron</h2>
+
+    <h4>Patron</h4>
+    <hr />
+<div class="row patron-details">
+    <dl class="col-sm-6" style="width:50%">
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.CreatedOn)
+        </dt>
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.CreatedOn)
+        </dd>
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.UpdatedOn)
+        </dt>
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.UpdatedOn)
+        </dd>
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.FirstName)
+        </dt>
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.FirstName)
+        </dd>
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.LastName)
+        </dt>
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.LastName)
+        </dd>
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.Address)
+        </dt>
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.Address)
+        </dd>
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.DateOfBirth)
+        </dt>
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.DateOfBirth)
+        </dd>
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.Email)
+        </dt>
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.Email)
+        </dd>
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.Telephone)
+        </dt>
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.Telephone)
+        </dd>
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.OverdueFees)
+        </dt>
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.OverdueFees)
+        </dd>
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.AccountStatus)
+        </dt>
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.AccountStatus)
+        </dd>
+        <dt class = "col-sm-3 patron-details-desc">
+            @Html.DisplayNameFor(model => model.Patron.LibraryCard.CurrentFees)
+        </dt>
+        <dd class = "col-sm-9 patron-details-info">
+            @Html.DisplayFor(model => model.Patron.LibraryCard.CurrentFees)
+        </dd>
+    </dl>
+
+    <div class="col-sm-5 mt-table">
+        <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
+            <thead>
+                <tr>
+                    <th>Book Title</th>
+                    <th>Checked Out Since</th>
+                    <th>Checked Out Until</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var checkout in @Model.Patron.LibraryCard.Checkouts)
+            {
+                <tr>
+                    <td>
+                        @checkout.Book.Title
+                    </td>
+                    <td>
+                        @checkout.CheckedOutSince
+                    </td>
+                    <td>
+                        @checkout.CheckedOutUntil
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <br />
+        <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
+            <thead>
+                <tr>
+                    <th>Book Title</th>
+                    <th>Checked Out</th>
+                    <th>Checked In</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var checkouthistory in @Model.CheckoutHistory)
+            {
+                <tr>
+                    <td>
+                        @checkouthistory.Book.Title
+                    </td>
+                    <td>
+                        @checkouthistory.CheckedOut
+                    </td>
+                    <td>
+                        @checkouthistory.CheckedIn
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <br />
+        <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
+            <thead>
+                <tr>
+                    <th>Book Title</th>
+                    <th>Reservation Placed On</th>
+                    <th>Reservation Updated On</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var reservation in @Model.Reservations)
+            {
+                <tr>
+                    <td>
+                        @reservation.Book.Title
+                    </td>
+                    <td>
+                        @reservation.HoldPlaced
+                    </td>
+                    <td>
+                        @reservation.UpdatedOn
+                    </td>
+                    <td>
+                        @reservation.Status
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div>
+    <br/>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-info"><i class="fa fa-arrow-left"></i> Back Home</a>
+</div>
+</div>

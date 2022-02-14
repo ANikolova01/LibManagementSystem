@@ -1,0 +1,57 @@
+﻿@using LibraryManagementSystem.Models
+@model LibraryManagementSystem.Models.CheckoutFullModel
+@{
+    ViewData["Title"] = "Check in "+ @Model.Book.Title;
+}
+
+@*@model is the model directive*@
+
+<div class="page-width">
+
+<div class="container">
+    <div class="header clearfix detailHeading">
+        <h2 class="text-muted">Check in Library Item</h2>
+    </div>
+    <div class="row">  
+    <div class="col-md-12">  
+        <div class="form-group">  
+            @Html.Raw(@ViewBag.Alert)  
+        </div>  
+    </div>  
+    </div> 
+    <div class="card card-checkout">
+        <div class="card-body">
+        <div class="card-title card-checkoutfont" id="itemTitle">@Model.Book.Title</div>
+        <div class="row">
+        <div class="col-md-3">
+            <div>
+                <img src="data:image;base64,@System.Convert.ToBase64String(Model.Book.BookImage)" width="240" height="390"/>  
+            </div>
+        </div>
+        @*you could also use tag helpers.*@
+        <div class="col-md-9">
+            @*this is an html helper - it creates an object that implements idisposable*@
+            @using (Html.BeginForm("CheckInBook", "Checkouts", FormMethod.Post))
+            {
+                @Html.HiddenFor(c => c.Book.Id)
+                <div class="form-group row">
+                    <label for="patronEmail" class="col-sm-3">Please insert a Patron's email.</label>
+                    <div class="col-sm-6">
+                    <input asp-for="Patron.Email" type="email" class="form-control" id="patronEmail" aria-describedby="emailHelp" placeholder="Enter email">
+                    @*write out a text box and set attributes according to info in the model*@
+                </div>
+                </div>
+                <div>
+                    <hr />
+                        <form asp-action="CheckInBook" asp-controller="Checkouts">
+                        <input type="hidden"/>
+                        <input type="submit" value="Check In" class="btn btn-success btn-lg" />
+                    </form>
+                </div>
+            }
+        </div>
+        </div>
+        </div>
+    </div>
+</div>
+</div>

@@ -4,12 +4,12 @@
     ViewData["Title"] = "Index";
 }
 <div class="page-width">
-<h1>Index</h1>
+<h2 class="header-color-index">Index for Checkouts</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-outline-success create-new-btn">Create New</a>
 </p>
-<table class="table">
+<table class="ui celled table compact table-striped table-hover" id="checkoutIndexTable">
     <thead>
         <tr>
             <th>
@@ -48,3 +48,37 @@
     </tbody>
 </table>
 </div>
+
+@section Styles {
+    <link href="https://cdn.datatables.net/1.11.3/css/dataTables.semanticui.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet" type="text/css" />
+
+}
+
+@section Scripts {
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/dataTables.semanticui.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#checkoutIndexTable').DataTable(                
+                {"columnDefs": [
+                { "orderable": false, "targets": [3] },
+                { "orderable": true, "targets": [0, 1, 2] }
+            ],
+            "createdRow": function( row, data, dataIndex){
+                if( new Date(data[2]) <  new Date($.now())){
+                    $(row).addClass('overdue');
+                }
+                else {
+                    $(row).addClass('approved');
+                }
+            }
+        });
+        });
+
+    </script>
+}

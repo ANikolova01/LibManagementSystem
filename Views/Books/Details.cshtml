@@ -4,23 +4,34 @@
     ViewData["Title"] = "Details";
 }
 <div class="page-width">
-<h1>Details</h1>
+<h2 class="header-color-details">Details for Book</h2>
 
     <h4>Book</h4>
     <hr />
-<div class="row">
-    <dl class="col-md-6 book-details"> <!--create separate styling for books maybe -->
+    @if(User.IsInRole("Basic")){
+        <div class="alert alert-primary" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        <h4 class="alert-heading">Make a reservation</h4>
+        <p>If you are interested in loaning this book, you can make a reservation before going to the library to pick up your copy. 
+            Please note that if you prolong your time for picking up an available copy, you will have to wait in case a all copies have
+            by that time been given out.</p>
+            <strong>You must be an approved patron before you can make any reservation!</strong>
+        <hr>
+        <p class="mb-0">Refer to the book section in case any update on this title has come up. You may also contact the library administration
+            for any specific info on checking out books.
+        </p>
+    </div>
+
+    }
+<div class="row book-details">
+    <dl class="col-md-4"> 
         <dt class = "col-sm-4 book-details-desc">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
         <dd class = "col-sm-10 book-details-info">
             @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-4 book-details-desc">
-            @Html.DisplayNameFor(model => model.Author)
-        </dt>
-        <dd class = "col-sm-10 book-details-info">
-            @Html.DisplayFor(model => model.Author)
         </dd>
         <dt class = "col-sm-4 book-details-desc">
             @Html.DisplayNameFor(model => model.ISBN)
@@ -29,22 +40,10 @@
             @Html.DisplayFor(model => model.ISBN)
         </dd>
         <dt class = "col-sm-4 book-details-desc">
-            @Html.DisplayNameFor(model => model.PublicationYear)
-        </dt> 
-        <dd class = "col-sm-10 book-details-info">
-            @Html.DisplayFor(model => model.PublicationYear)
-        </dd>
-        <dt class = "col-sm-4 book-details-desc">
             @Html.DisplayNameFor(model => model.Edition)
         </dt> 
         <dd class = "col-sm-10 book-details-info">
             @Html.DisplayFor(model => model.Edition)
-        </dd>
-        <dt class = "col-sm-4 book-details-desc">
-            @Html.DisplayNameFor(model => model.Publisher)
-        </dt>
-        <dd class = "col-sm-10 book-details-info">
-            @Html.DisplayFor(model => model.Publisher)
         </dd>
         <dt class = "col-sm-4 book-details-desc">
             @Html.DisplayNameFor(model => model.DeweyIndex)
@@ -52,28 +51,16 @@
         <dd class = "col-sm-10 book-details-info">
             @Html.DisplayFor(model => model.DeweyIndex)
         </dd>
-        <dt class = "col-sm-4 book-details-desc">
-            @Html.DisplayNameFor(model => model.Language)
-        </dt>
-        <dd class = "col-sm-10 book-details-info">
-            @Html.DisplayFor(model => model.Language)
-        </dd>
-        <dt class = "col-sm-4 book-details-desc">
+        <dt class = "col-sm-10 book-details-desc">
             @Html.DisplayNameFor(model => model.NoOfPages_LengthTime)
         </dt>
-        <dd class = "col-sm-10book-details-info">
-            @Html.DisplayFor(model => model.NoOfPages_LengthTime)
-        </dd>
-        <dt class = "col-sm-4 book-details-desc">
-            @Html.DisplayNameFor(model => model.Genre)
-        </dt>
         <dd class = "col-sm-10 book-details-info">
-            @Html.DisplayFor(model => model.Genre)
+            @Html.DisplayFor(model => model.NoOfPages_LengthTime)
         </dd>
         <dt class = "col-sm-4 book-details-desc">
             @Html.DisplayNameFor(model => model.Summary)
         </dt>
-        <dd class = "col-sm-10 book-details-info">
+        <dd class = "col-sm-12 book-details-info">
             @Html.DisplayFor(model => model.Summary)
         </dd>
         <dt class = "col-sm-4 book-details-desc">
@@ -83,16 +70,50 @@
             @Html.DisplayFor(model => model.AvailabilityStatus.Description)
         </dd>
         <dt class = "col-sm-4 book-details-desc">
-            @Html.DisplayNameFor(model => model.CopiesAvailable)
-        </dt>
-        <dd class = "col-sm-10 book-details-info">
-            @Html.DisplayFor(model => model.CopiesAvailable)
-        </dd>
-        <dt class = "col-sm-4 book-details-desc">
             @Html.DisplayNameFor(model => model.Cost)
         </dt>
         <dd class = "col-sm-10 book-details-info">
             @Html.DisplayFor(model => model.Cost)
+        </dd>
+    </dl>
+    <dl class="col-md-4">
+        <dt class = "col-sm-4 book-details-desc">
+            @Html.DisplayNameFor(model => model.Author)
+        </dt>
+        <dd class = "col-sm-10 book-details-info">
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+        <dt class = "col-sm-4 book-details-desc">
+            @Html.DisplayNameFor(model => model.PublicationYear)
+        </dt> 
+        <dd class = "col-sm-10 book-details-info">
+            @Html.DisplayFor(model => model.PublicationYear)
+        </dd>
+        <dt class = "col-sm-4 book-details-desc">
+            @Html.DisplayNameFor(model => model.Publisher)
+        </dt>
+        <dd class = "col-sm-10 book-details-info">
+            @Html.DisplayFor(model => model.Publisher)
+        </dd>
+        <dt class = "col-sm-4 book-details-desc">
+            @Html.DisplayNameFor(model => model.Language)
+        </dt>
+        <dd class = "col-sm-10 book-details-info">
+            @Html.DisplayFor(model => model.Language)
+        </dd>
+        <dt class = "col-sm-4 book-details-desc">
+            @Html.DisplayNameFor(model => model.Genre)
+        </dt>
+        <dd class = "col-sm-10 book-details-info">
+            @Html.DisplayFor(model => model.Genre)
+        </dd>
+        <dt></dt>
+        <dd></dd>
+        <dt class = "col-sm-4 book-details-desc">
+            @Html.DisplayNameFor(model => model.CopiesAvailable)
+        </dt>
+        <dd class = "col-sm-10 book-details-info">
+            @Html.DisplayFor(model => model.CopiesAvailable)
         </dd>
         <dt class = "col-sm-4 book-details-desc">
             @Html.DisplayNameFor(model => model.NumberOfCopies)
@@ -101,17 +122,16 @@
             @Html.DisplayFor(model => model.NumberOfCopies)
         </dd>
     </dl>
-
-    <div class="col-md-6 branch-details-img">
+    <div class="col-md-4 branch-details-img">
         <div class="form-group">
 
             @if (Model.BookImage != null)
             {
-                <img id="bookImage" style="width:350px;height:350px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(Model.BookImage))">
+                <img id="bookImage" style="width:350px;height:500px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(Model.BookImage))">
             }
             else
             {
-                <img id="bookImage" style="width:350px;height:350px; object-fit:cover" src="">
+                <img id="bookImage" style="width:350px;height:500px; object-fit:cover" src="">
             }
         </div>
     </div>
@@ -124,14 +144,58 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a> 
     <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
-</div>
-}
-else if (User.IsInRole("Basic"))
-{
     <br />
-    <div>
-    <a asp-action="IndexBasic" class="btn btn-outline-info">Back to List</a>
-</div> 
+    @if(Model.AvailabilityStatus.Name == "GOOD_CONDITION" && Model.CopiesAvailable >= 1) {
+        <br />
+        <form asp-action="Checkout">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Checkout" class="btn btn-success btn-lg" />
+    </form>
+        <br />
+        }
+    @if(Model.CopiesAvailable < Model.NumberOfCopies)
+    {
+    <form asp-action="CheckIn">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" value="Check In" class="btn btn-info btn-lg" />
+</form> 
+            <hr />
+        }
+    else if(Model.AvailabilityStatus.Name == "LOST" || Model.AvailabilityStatus.Name == "DESTROYED")
+    {
+        <hr />
+        <div class="alert alert-danger page-width" role="alert">
+        <h4 class="alert-heading">Unable to Check out</h4>
+        <p>Copies of this title have been destroyed or lost, therefore you are unable to check it out.</p>
+        <hr>
+        <p class="mb-0">Refer to the book section in case any update on this title has come up.</p>
+    </div>
+    }
+        </div>
 }
 
+else if (User.IsInRole("Basic"))
+{
+    @if(Model.AvailabilityStatus.Name == "LOST" || Model.AvailabilityStatus.Name == "DESTROYED") {
+                <div class="alert alert-danger page-width" role="alert">
+                <h4 class="alert-heading">Unable to Check out</h4>
+                <p>Copies of this title have been destroyed or lost, therefore you are unable to check it out or place a reservation on it.</p>
+                <hr>
+                <p class="mb-0">Refer to the library branch in case you would like to have any update on the title.</p>
+            </div>
+    }
+    else
+    {
+        <br />
+        <form asp-action="Reservation">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Reserve" class="btn btn-info btn-lg" />
+    </form>
+    }
+    }
+
+<br />
+    <div>
+    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
+</div> 
 </div>

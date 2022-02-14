@@ -1,10 +1,10 @@
-﻿@model LibraryManagementSystem.Models.LibraryCard
+﻿@model LibraryManagementSystem.Models.LibraryCardFullModel
 
 @{
     ViewData["Title"] = "Edit";
 }
-
-<h1>Edit</h1>
+<div clas="page-width">
+<h2 class="header-color-edit">Edit</h2>
 
 <h4>LibraryCard</h4>
 <hr />
@@ -12,16 +12,26 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="LibraryCard.Id" />
             <div class="form-group">
-                <label asp-for="CurrentFees" class="control-label"></label>
-                <input asp-for="CurrentFees" class="form-control" />
-                <span asp-validation-for="CurrentFees" class="text-danger"></span>
+                <label asp-for="Patron.FirstName" class="control-label"></label>
+                <input asp-for="Patron.FirstName" class="form-control" disabled/>
+                <span asp-validation-for="Patron.FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Issued" class="control-label"></label>
-                <input asp-for="Issued" class="form-control" />
-                <span asp-validation-for="Issued" class="text-danger"></span>
+                <label asp-for="Patron.LastName" class="control-label"></label>
+                <input asp-for="Patron.LastName" class="form-control" disabled/>
+                <span asp-validation-for="Patron.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LibraryCard.CurrentFees" class="control-label"></label>
+                <input asp-for="LibraryCard.CurrentFees" class="form-control" disabled/>
+                <span asp-validation-for="LibraryCard.CurrentFees" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LibraryCard.Issued" class="control-label"></label>
+                <input asp-for="LibraryCard.Issued" class="form-control" />
+                <span asp-validation-for="LibraryCard.Issued" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -31,9 +41,9 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
 </div>
-
+</div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

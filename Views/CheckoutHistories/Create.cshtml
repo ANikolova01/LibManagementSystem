@@ -1,17 +1,44 @@
-﻿@model LibraryManagementSystem.Models.CheckoutHistory
+﻿@model LibraryManagementSystem.Models.CheckoutHistoryFullModel
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<div class="page-width">
+<h2 class="header-color-create">Create</h2>
 
 <h4>CheckoutHistory</h4>
 <hr />
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>A checkout history note can only be created if a previous one has been deleted or not taken in as a checkout first</strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Patron.FirstName" class="control-label"></label>
+                <input asp-for="Patron.FirstName" class="form-control" />
+                <span asp-validation-for="Patron.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Patron.LastName" class="control-label"></label>
+                <input asp-for="Patron.LastName" class="form-control" />
+                <span asp-validation-for="Patron.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Patron.Email" class="control-label"></label>
+                <input asp-for="Patron.Email" class="form-control" />
+                <span asp-validation-for="Patron.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Book.Title" class="control-label"></label>
+                <input asp-for="Book.Title" class="form-control" />
+                <span asp-validation-for="Book.Title" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="CheckedOut" class="control-label"></label>
                 <input asp-for="CheckedOut" class="form-control" />
@@ -30,6 +57,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
 </div>
 
+</div>

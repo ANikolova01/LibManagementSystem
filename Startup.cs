@@ -3,6 +3,7 @@ using LibraryManagementSystem.Interfaces;
 using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,10 +15,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebPWrecover.Services;
 
 namespace LibraryManagementSystem
 {
@@ -47,17 +50,29 @@ namespace LibraryManagementSystem
                 options.EnableSensitiveDataLogging(true); 
             });
 
+            services.ConfigureApplicationCookie(o => {
+                o.ExpireTimeSpan = TimeSpan.FromDays(5);
+                o.SlidingExpiration = true;
+            });
+
+            services.Configure<DataProtectionTokenProviderOptions>(o => o.TokenLifespan = TimeSpan.FromHours(10));
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultUI()
-                .AddDefaultTokenProviders();
+            services.AddDefaultIdentity<ApplicationUser>(options => {
+                options.SignIn.RequireConfirmedAccount = true;
+                options.Tokens.ProviderMap.Add("CustomEmailConfirmation",
+            new TokenProviderDescriptor(typeof(CustomEmailConfirmationTokenProvider<ApplicationUser>)));
+                options.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmation";
+            }).AddRoles<IdentityRole>()
+              .AddEntityFrameworkStores<ApplicationDbContext>()
+              .AddDefaultUI()
+              .AddDefaultTokenProviders();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddControllersWithViews();
-
+            services.AddTransient<CustomEmailConfirmationTokenProvider<ApplicationUser>>();
             // requires
             // using Microsoft.AspNetCore.Identity.UI.Services;
             // using WebPWrecover.Services;
@@ -72,6 +87,26 @@ namespace LibraryManagementSystem
             });
 
             services.AddScoped<ILibraryBranchService, LibraryBranchService>();
+        }
+
+        public class CustomEmailConfirmationTokenProvider<TUser>
+                                       : DataProtectorTokenProvider<TUser> where TUser : class
+        {
+            public CustomEmailConfirmationTokenProvider(IDataProtectionProvider dataProtectionProvider,
+                IOptions<EmailConfirmationTokenProviderOptions> options,
+                ILogger<DataProtectorTokenProvider<TUser>> logger)
+                                                  : base(dataProtectionProvider, options, logger)
+            {
+
+            }
+        }
+        public class EmailConfirmationTokenProviderOptions : DataProtectionTokenProviderOptions
+        {
+            public EmailConfirmationTokenProviderOptions()
+            {
+                Name = "EmailDataProtectorTokenProvider";
+                TokenLifespan = TimeSpan.FromHours(4);
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

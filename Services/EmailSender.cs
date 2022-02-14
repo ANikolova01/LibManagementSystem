@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using LibraryManagementSystem.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Threading.Tasks;
 
-namespace LibraryManagementSystem.Services
+namespace WebPWrecover.Services
 {
     public class EmailSender : IEmailSender
     {
@@ -25,7 +26,7 @@ namespace LibraryManagementSystem.Services
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("admin@libmanagementsystem.com", "Password Recovery"),
+                From = new EmailAddress("librarysstm@gmail.com", "Library Account Management"),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message

@@ -1,15 +1,27 @@
-﻿@model LibraryManagementSystem.Models.Checkout
+﻿@model LibraryManagementSystem.Models.CheckoutFullModel
 
 @{
     ViewData["Title"] = "Details";
 }
-
-<h1>Details</h1>
+<div class="page-width">
+<h2 class="header-color-details">Details for Checkout</h2>
 
 <div>
     <h4>Checkout</h4>
     <hr />
     <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Book.Title)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Book.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            Patron
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Patron.FirstName)  @Html.DisplayFor(model => model.Patron.LastName)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CheckedOutSince)
         </dt>
@@ -25,6 +37,8 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a> 
+    <br />
+    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
+</div>
 </div>
