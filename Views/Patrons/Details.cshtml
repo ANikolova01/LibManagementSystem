@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Details";
 }
-<div class="page-width">
+<div class="page-width2">
 <h2 class="header-color-details">Details for Patron</h2>
 
     <h4>Patron</h4>
@@ -75,6 +75,7 @@
     <div class="col-sm-5 mt-table">
         <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
             <thead>
+            <caption class="caption-pos"><strong>Current Checkouts</strong></caption>
                 <tr>
                     <th>Book Title</th>
                     <th>Checked Out Since</th>
@@ -108,6 +109,7 @@
         </table>
         <br />
         <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
+            <caption class="caption-pos"><strong>Checkout History</strong></caption>
             <thead>
                 <tr>
                     <th>Book Title</th>
@@ -142,11 +144,13 @@
         </table>
         <br />
         <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
+            <caption class="caption-pos"><strong>Reservations</strong></caption>
             <thead>
                 <tr>
                     <th>Book Title</th>
                     <th>Checked Out Since</th>
                     <th>Checked Out Until</th>
+                    <th>Status</th>
                     <th></th>
                 </tr>
             </thead>
