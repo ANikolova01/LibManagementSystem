@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Edit";
 }
-<div class="page-width">
+<div class="page-width padding-extra">
 <h2 class="header-color-edit">Edit for reservation</h2>
 
 <h4>Reservation</h4>
@@ -36,18 +36,18 @@
             <div class="form-group">
                 <label asp-for="HoldPlaced" class="control-label"></label>
                 <input asp-for="HoldPlaced" class="form-control" />
-                <span asp-validation-for="HoldPlaced" class="text-danger"></span>
+                <span asp-validation-for="HoldPlaced" class="alert-danger alert-text"></span>
             </div>
             <div class="form-group">
                 <label asp-for="UpdatedOn" class="control-label"></label>
                 <input asp-for="UpdatedOn" class="form-control" />
-                <span asp-validation-for="UpdatedOn" class="text-danger"></span>
+                <span asp-validation-for="UpdatedOn" class="alert-danger alert-text"></span>
             </div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
                 <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
+                <span asp-validation-for="Status" class="alert-danger alert-text"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

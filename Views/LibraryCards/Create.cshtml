@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Create";
 }
-<div class="page-width">
+<div class="page-width padding-extracard">
 <h2 class="header-color-create">Create</h2>
 
 <h4>LibraryCard</h4>
@@ -22,17 +22,17 @@
             <div class="form-group">
                 <label asp-for="Patron.Email" class="control-label"></label>
                 <input asp-for="Patron.Email" class="form-control" />
-                <span asp-validation-for="Patron.Email" class="text-danger"></span>
+                <span asp-validation-for="Patron.Email" class="alert-danger alert-text"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LibraryCard.CurrentFees" class="control-label"></label>
                 <input asp-for="LibraryCard.CurrentFees" class="form-control" />
-                <span asp-validation-for="LibraryCard.CurrentFees" class="text-danger"></span>
+                <span asp-validation-for="LibraryCard.CurrentFees" class="alert-danger alert-text"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LibraryCard.Issued" class="control-label"></label>
                 <input asp-for="LibraryCard.Issued" class="form-control" />
-                <span asp-validation-for="LibraryCard.Issued" class="text-danger"></span>
+                <span asp-validation-for="LibraryCard.Issued" class="alert-danger alert-text"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

@@ -70,7 +70,7 @@
                 { "orderable": true, "targets": [0, 1, 2] }
             ],
             "createdRow": function( row, data, dataIndex){
-                if( new Date(data[2]) <  new Date($.now())){
+                if( new Date(data[2]) >  new Date($.now())){
                     $(row).addClass('overdue');
                 }
                 else {

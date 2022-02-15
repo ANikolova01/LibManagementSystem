@@ -38,7 +38,9 @@ namespace LibraryManagementSystem.Models
         [Column(TypeName = "decimal(18,4)")]
         public decimal Cost { get; set; }
         public LibraryBranch Location { get; set; }
+        [Display(Name = "Number of Copies")]
         public int NumberOfCopies { get; set; }
+        [Display(Name = "Copies Available")]
         public int CopiesAvailable { get; set; }
         public string Type { get; set; }
     }

@@ -16,45 +16,45 @@
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <span asp-validation-for="Name" class="alert-danger alert-text"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
                 <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
+                <span asp-validation-for="Address" class="alert-danger alert-text"></span>
             </div>
             <div class="form-row">
                 <div class="form-group col-auto">
                     <label asp-for="Telephone" class="control-label"></label>
                     <input asp-for="Telephone" class="form-control" />
-                    <span asp-validation-for="Telephone" class="text-danger"></span>
+                    <span asp-validation-for="Telephone" class="alert-danger alert-text"></span>
                 </div>
                 <div class="form-group col-auto">
                     <label asp-for="OpenDate" class="control-label"></label>
                     <input asp-for="OpenDate" class="form-control" />
-                    <span asp-validation-for="OpenDate" class="text-danger"></span>
+                    <span asp-validation-for="OpenDate" class="alert-danger alert-text"></span>
                 </div>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
                 <textarea asp-for="Description" class="form-control" rows="3" ></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <span asp-validation-for="Description" class="alert-danger alert-text"></span>
             </div>
             <div class="form-row">
             <div class="form-group col-auto">
                 <label asp-for="NumberOfPatrons" class="control-label"></label>
                 <input asp-for="NumberOfPatrons" class="form-control" />
-                <span asp-validation-for="NumberOfPatrons" class="text-danger"></span>
+                <span asp-validation-for="NumberOfPatrons" class="alert-danger alert-text"></span>
             </div>
             <div class="form-group col-auto">
                 <label asp-for="NumberOfAssets" class="control-label"></label>
                 <input asp-for="NumberOfAssets" class="form-control" />
-                <span asp-validation-for="NumberOfAssets" class="text-danger"></span>
+                <span asp-validation-for="NumberOfAssets" class="alert-danger alert-text"></span>
             </div>
             <div class="form-group col-auto">
                 <label asp-for="TotalAssetValue" class="control-label"></label>
                 <input asp-for="TotalAssetValue" class="form-control" />
-                <span asp-validation-for="TotalAssetValue" class="text-danger"></span>
+                <span asp-validation-for="TotalAssetValue" class="alert-danger alert-text"></span>
             </div>
             </div>
 
@@ -80,7 +80,7 @@
                     class="form-control"
                     style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
                     onchange="document.getElementById('branchImage').src = window.URL.createObjectURL(this.files[0])" />
-            <span asp-validation-for="BranchImage" class="text-danger"></span>
+            <span asp-validation-for="BranchImage" class="alert-danger alert-text"></span>
         </div>
       </div>
    </div>

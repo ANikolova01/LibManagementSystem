@@ -15,13 +15,13 @@
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="CheckedOut" class="control-label"></label>
-                <input asp-for="CheckedOut" class="form-control" />
-                <span asp-validation-for="CheckedOut" class="text-danger"></span>
+                <input asp-for="CheckedOut" class="form-control" disabled/>
+                <span asp-validation-for="CheckedOut" class="alert-danger alert-text"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CheckedIn" class="control-label"></label>
-                <input asp-for="CheckedIn" class="form-control" />
-                <span asp-validation-for="CheckedIn" class="text-danger"></span>
+                <input asp-for="CheckedIn" class="form-control" disabled/>
+                <span asp-validation-for="CheckedIn" class="alert-danger alert-text"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

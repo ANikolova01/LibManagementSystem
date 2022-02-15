@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Edit";
 }
-<div clas="page-width">
+<div clas="page-width padding-extracard">
 <h2 class="header-color-edit">Edit</h2>
 
 <h4>LibraryCard</h4>
@@ -16,22 +16,22 @@
             <div class="form-group">
                 <label asp-for="Patron.FirstName" class="control-label"></label>
                 <input asp-for="Patron.FirstName" class="form-control" disabled/>
-                <span asp-validation-for="Patron.FirstName" class="text-danger"></span>
+                <span asp-validation-for="Patron.FirstName" class="alert-danger alert-text"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Patron.LastName" class="control-label"></label>
                 <input asp-for="Patron.LastName" class="form-control" disabled/>
-                <span asp-validation-for="Patron.LastName" class="text-danger"></span>
+                <span asp-validation-for="Patron.LastName" class="alert-danger alert-text"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LibraryCard.CurrentFees" class="control-label"></label>
                 <input asp-for="LibraryCard.CurrentFees" class="form-control" disabled/>
-                <span asp-validation-for="LibraryCard.CurrentFees" class="text-danger"></span>
+                <span asp-validation-for="LibraryCard.CurrentFees" class="alert-danger alert-text"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LibraryCard.Issued" class="control-label"></label>
                 <input asp-for="LibraryCard.Issued" class="form-control" />
-                <span asp-validation-for="LibraryCard.Issued" class="text-danger"></span>
+                <span asp-validation-for="LibraryCard.Issued" class="alert-danger alert-text"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
