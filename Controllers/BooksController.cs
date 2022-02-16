@@ -257,31 +257,26 @@ namespace LibraryManagementSystem.Controllers
                 oldBook.AvailabilityStatus = status;
             }
 
-            var updateBook = new Book
-            {
-                Id = book.Id,
-                Title = book.Title,
-                Author = book.Author,
-                ISBN = book.ISBN,
-                PublicationYear = book.PublicationYear,
-                Edition = book.Edition,
-                Publisher = book.Publisher,
-                DeweyIndex = book.DeweyIndex,
-                Language = book.Language,
-                NoOfPages_LengthTime = book.NoOfPages_LengthTime,
-                Genre = book.Genre,
-                Summary = book.Summary,
-                BookImage = oldBook.BookImage,
-                AvailabilityStatus = oldBook.AvailabilityStatus,
-                Cost = book.Cost,
-                Location = oldBook.Location,
-                NumberOfCopies = book.NumberOfCopies,
-                CopiesAvailable = book.CopiesAvailable,
-                Type = book.Type,
-            };
+
+            oldBook.Title = book.Title;
+            oldBook.Author = book.Author;
+            oldBook.ISBN = book.ISBN;
+            oldBook.PublicationYear = book.PublicationYear;
+            oldBook.Edition = book.Edition;
+            oldBook.Publisher = book.Publisher;
+            oldBook.DeweyIndex = book.DeweyIndex;
+            oldBook.Language = book.Language;
+            oldBook.NoOfPages_LengthTime = book.NoOfPages_LengthTime;
+            oldBook.Genre = book.Genre;
+            oldBook.Summary = book.Summary;
+            oldBook.Cost = book.Cost;
+            oldBook.NumberOfCopies = book.NumberOfCopies;
+            oldBook.CopiesAvailable = book.CopiesAvailable;
+            oldBook.Type = book.Type;
+
             try
                 {
-                    _context.Update(updateBook);
+                    _context.Update(oldBook);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
