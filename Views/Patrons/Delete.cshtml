@@ -83,7 +83,7 @@
             @Html.DisplayFor(model => model.AccountStatus)
         </dd>
     </dl>
-    @if(@Model.LibraryCard.Checkouts.Count() == 0 && @Model.OverdueFees == 0){
+    @if(@Model.LibraryCard != null && @Model.LibraryCard.Checkouts.Count() == 0 && @Model.OverdueFees == 0){
         <form asp-action="Delete">
             <input type="hidden" asp-for="Id" />
             <input type="submit" value="Delete" class="btn btn-danger" /> 

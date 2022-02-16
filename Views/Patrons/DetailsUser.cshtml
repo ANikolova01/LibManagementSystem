@@ -79,7 +79,9 @@
     </dl>
 
     <div class="col-sm-5 mt-table">
-        <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
+        @if(@Model.Patron.LibraryCard != null)
+        {
+            <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
             <caption class="caption-pos"><strong>Current Checkouts</strong></caption>
             <thead>
                 <tr>
@@ -104,9 +106,12 @@
                 </tr>
             }
             </tbody>
-        </table>
+        </table>   
+        }
         <br />
-        <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
+        @if(@Model.Patron.LibraryCard != null)
+        {
+            <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
             <caption class="caption-pos"><strong>Checkout History</strong></caption>
             <thead>
                 <tr>
@@ -131,9 +136,12 @@
                 </tr>
             }
             </tbody>
-        </table>
+        </table>  
+         }
         <br />
-        <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
+        @if(@Model.Patron.LibraryCard != null)
+        {
+            <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
             <caption class="caption-pos"><strong>Reservations</strong></caption>
             <thead>
                 <tr>
@@ -162,7 +170,8 @@
                 </tr>
             }
             </tbody>
-        </table>
+        </table>                
+         }
     </div>
 </div>
 <div>

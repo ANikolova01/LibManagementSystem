@@ -73,41 +73,48 @@
     </dl>
 
     <div class="col-sm-5 mt-table">
-        <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
-            <thead>
-            <caption class="caption-pos"><strong>Current Checkouts</strong></caption>
-                <tr>
-                    <th>Book Title</th>
-                    <th>Checked Out Since</th>
-                    <th>Checked Out Until</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach (var checkout in @Model.Patron.LibraryCard.Checkouts)
+            @if (@Model.Patron.LibraryCard != null)
             {
-                <tr>
-                    <td>
-                        @checkout.Book.Title
-                    </td>
-                    <td>
-                        @checkout.CheckedOutSince
-                    </td>
-                    <td>
-                        @checkout.CheckedOutUntil
-                    </td>
-                    <td>
-                    <div class="btn-group btn-group-sm" role="group">
-                        <a asp-action="Edit" asp-controller="Checkouts" asp-route-id="@checkout.Id" class="btn btn-outline-primary">Edit</a>
-                        <a asp-action="Details" asp-controller="Checkouts" asp-route-id="@checkout.Id" class="btn btn-outline-info">Details</a>
-                        <a asp-action="Delete" asp-controller="Checkouts" asp-route-id="@checkout.Id" class="btn btn-outline-danger">Delete</a>
-                    </div>
-                    </td>
-                </tr>
+                <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
+                    <thead>
+                        <caption class="caption-pos"><strong>Current Checkouts</strong></caption>
+                        <tr>
+                            <th>Book Title</th>
+                            <th>Checked Out Since</th>
+                            <th>Checked Out Until</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var checkout in @Model.Patron.LibraryCard.Checkouts)
+                        {
+                            <tr>
+                                <td>
+                                    @checkout.Book.Title
+                                </td>
+                                <td>
+                                    @checkout.CheckedOutSince
+                                </td>
+                                <td>
+                                    @checkout.CheckedOutUntil
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a asp-action="Edit" asp-controller="Checkouts" asp-route-id="@checkout.Id" class="btn btn-outline-primary">Edit</a>
+                                        <a asp-action="Details" asp-controller="Checkouts" asp-route-id="@checkout.Id" class="btn btn-outline-info">Details</a>
+                                        <a asp-action="Delete" asp-controller="Checkouts" asp-route-id="@checkout.Id" class="btn btn-outline-danger">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        } 
+
+                    </tbody>
+                </table>
             }
-            </tbody>
-        </table>
-        <br />
+            <br />
+        @if(@Model.Patron.LibraryCard != null)
+        {
         <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
             <caption class="caption-pos"><strong>Checkout History</strong></caption>
             <thead>
@@ -119,30 +126,35 @@
                 </tr>
             </thead>
             <tbody>
-            @foreach (var checkouthistory in @Model.CheckoutHistory)
-            {
-                <tr>
-                    <td>
-                        @checkouthistory.Book.Title
-                    </td>
-                    <td>
-                        @checkouthistory.CheckedOut
-                    </td>
-                    <td>
-                        @checkouthistory.CheckedIn
-                    </td>
-                    <td>
-                    <div class="btn-group btn-group-sm" role="group">
-                        <a asp-action="Edit" asp-controller="CheckoutHistories" asp-route-id="@checkouthistory.Id" class="btn btn-outline-primary">Edit</a>
-                        <a asp-action="Details" asp-controller="CheckoutHistories" asp-route-id="@checkouthistory.Id" class="btn btn-outline-info">Details</a>
-                        <a asp-action="Delete" asp-controller="CheckoutHistories" asp-route-id="@checkouthistory.Id" class="btn btn-outline-danger">Delete</a>
-                    </div>
-                    </td>
-                </tr>
-            }
+                @foreach (var checkouthistory in @Model.CheckoutHistory)
+                {
+                    <tr>
+                        <td>
+                            @checkouthistory.Book.Title
+                        </td>
+                        <td>
+                            @checkouthistory.CheckedOut
+                        </td>
+                        <td>
+                            @checkouthistory.CheckedIn
+                        </td>
+                        <td>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <a asp-action="Edit" asp-controller="CheckoutHistories" asp-route-id="@checkouthistory.Id" class="btn btn-outline-primary">Edit</a>
+                            <a asp-action="Details" asp-controller="CheckoutHistories" asp-route-id="@checkouthistory.Id" class="btn btn-outline-info">Details</a>
+                            <a asp-action="Delete" asp-controller="CheckoutHistories" asp-route-id="@checkouthistory.Id" class="btn btn-outline-danger">Delete</a>
+                        </div>
+                        </td>
+                    </tr>
+                }                        
+
+
             </tbody>
         </table>
+        }
         <br />
+            @if (@Model.Patron.LibraryCard != null)
+            {
         <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
             <caption class="caption-pos"><strong>Reservations</strong></caption>
             <thead>
@@ -155,32 +167,33 @@
                 </tr>
             </thead>
             <tbody>
-            @foreach (var reservation in @Model.Reservations)
-            {
-                <tr>
-                    <td>
-                        @reservation.Book.Title
-                    </td>
-                    <td>
-                        @reservation.HoldPlaced
-                    </td>
-                    <td>
-                        @reservation.UpdatedOn
-                    </td>
-                    <td>
-                        @reservation.Status
-                    </td>
-                    <td>
-                    <div class="btn-group btn-group-sm" role="group">
-                        <a asp-action="Edit" asp-controller="Reservations" asp-route-id="@reservation.Id" class="btn btn-outline-primary">Edit</a>
-                        <a asp-action="Details" asp-controller="Reservations" asp-route-id="@reservation.Id" class="btn btn-outline-info">Details</a>
-                        <a asp-action="Delete" asp-controller="Reservations" asp-route-id="@reservation.Id" class="btn btn-outline-danger">Delete</a>
-                    </div>
-                    </td>
-                </tr>
-            }
+                @foreach (var reservation in @Model.Reservations)
+                {
+                    <tr>
+                        <td>
+                            @reservation.Book.Title
+                        </td>
+                        <td>
+                            @reservation.HoldPlaced
+                        </td>
+                        <td>
+                            @reservation.UpdatedOn
+                        </td>
+                        <td>
+                            @reservation.Status
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a asp-action="Edit" asp-controller="Reservations" asp-route-id="@reservation.Id" class="btn btn-outline-primary">Edit</a>
+                                <a asp-action="Details" asp-controller="Reservations" asp-route-id="@reservation.Id" class="btn btn-outline-info">Details</a>
+                                <a asp-action="Delete" asp-controller="Reservations" asp-route-id="@reservation.Id" class="btn btn-outline-danger">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
+        }
     </div>
 </div>
 <div class="mt-table">

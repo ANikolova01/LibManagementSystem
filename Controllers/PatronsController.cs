@@ -40,23 +40,40 @@ namespace LibraryManagementSystem.Controllers
                 return NotFound();
             }
 
-            var patron = await _context.Patrons.Include(p => p.LibraryCard).ThenInclude(l => l.Checkouts).ThenInclude(c => c.Book).FirstOrDefaultAsync(m => m.Id == id);
-            var checkoutHistory = await _context.CheckoutHistories.Include(c => c.Book).Include(c => c.LibraryCard).Where(c => c.LibraryCard.Id == patron.LibraryCard.Id).ToListAsync();
-            var reservations = await _context.Reservation.Include(c => c.Book).Include(c => c.LibraryCard).Where(r => r.LibraryCard.Id == patron.LibraryCard.Id).ToListAsync();
-
-            if (patron == null)
+            var patron = await _context.Patrons.Include(p => p.LibraryCard).FirstOrDefaultAsync(m => m.Id == id);
+            if (patron.LibraryCard != null)
             {
-                return NotFound();
+                var libraryCard = await _context.LibraryCards.Include(l => l.Checkouts).ThenInclude(c => c.Book).FirstOrDefaultAsync(l => l.Id == patron.LibraryCard.Id);
+                
+                var checkoutHistory = await _context.CheckoutHistories.Include(c => c.Book).Include(c => c.LibraryCard).Where(c => c.LibraryCard.Id == patron.LibraryCard.Id).ToListAsync();
+                var reservations = await _context.Reservation.Include(c => c.Book).Include(c => c.LibraryCard).Where(r => r.LibraryCard.Id == patron.LibraryCard.Id).ToListAsync();
+                if (patron == null)
+                {
+                    return NotFound();
+                }
+
+                PatronFullModel patronModel = new PatronFullModel
+                {
+                    Patron = patron,
+                    CheckoutHistory = checkoutHistory,
+                    Reservations = reservations
+                };
+
+                return View(patronModel);
+
+            }
+            else
+            {
+                PatronFullModel patronModel = new PatronFullModel
+                {
+                    Patron = patron,
+                    CheckoutHistory = null,
+                    Reservations = null
+                };
+
+                return View(patronModel);
             }
 
-            PatronFullModel patronModel = new PatronFullModel
-            {
-                Patron = patron,
-                CheckoutHistory = checkoutHistory,
-                Reservations = reservations
-            };
-
-            return View(patronModel);
         }
 
         // GET: Patrons/Details/5
