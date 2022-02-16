@@ -257,8 +257,28 @@ namespace LibraryManagementSystem.Controllers
                 oldBook.AvailabilityStatus = status;
             }
 
-            //       Book updateBook = book;
-            Book updateBook = oldBook;
+            var updateBook = new Book
+            {
+                Id = book.Id,
+                Title = book.Title,
+                Author = book.Author,
+                ISBN = book.ISBN,
+                PublicationYear = book.PublicationYear,
+                Edition = book.Edition,
+                Publisher = book.Publisher,
+                DeweyIndex = book.DeweyIndex,
+                Language = book.Language,
+                NoOfPages_LengthTime = book.NoOfPages_LengthTime,
+                Genre = book.Genre,
+                Summary = book.Summary,
+                BookImage = oldBook.BookImage,
+                AvailabilityStatus = oldBook.AvailabilityStatus,
+                Cost = book.Cost,
+                Location = oldBook.Location,
+                NumberOfCopies = book.NumberOfCopies,
+                CopiesAvailable = book.CopiesAvailable,
+                Type = book.Type,
+            };
             try
                 {
                     _context.Update(updateBook);
