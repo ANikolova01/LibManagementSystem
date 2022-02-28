@@ -33,7 +33,7 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/CheckoutHistories/NotFound.cshtml");
             }
 
             var checkoutHistory = await _context.CheckoutHistories.Include(c => c.Book).Include(c => c.LibraryCard)
@@ -42,7 +42,7 @@ namespace LibraryManagementSystem.Controllers
 
             if (checkoutHistory == null)
             {
-                return NotFound();
+                return View("~/Views/CheckoutHistories/NotFound.cshtml");
             }
 
             var checkoutHistoryModel = new CheckoutHistoryFullModel
@@ -97,13 +97,13 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/CheckoutHistories/NotFound.cshtml");
             }
 
             var checkoutHistory = await _context.CheckoutHistories.Include(c => c.Book).ThenInclude(b => b.Location).Include(c => c.LibraryCard).FirstOrDefaultAsync(c => c.Id == id);
             if (checkoutHistory == null)
             {
-                return NotFound();
+                return View("~/Views/CheckoutHistories/NotFound.cshtml");
             }
 
             var patron = await _context.Patrons.Include(p => p.LibraryCard).FirstOrDefaultAsync(p => p.LibraryCard.Id == checkoutHistory.LibraryCard.Id);
@@ -130,7 +130,7 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id != checkoutHistoryModel.Id)
             {
-                return NotFound();
+                return View("~/Views/CheckoutHistories/NotFound.cshtml");
             }
 
             var checkoutHistory = new CheckoutHistory
@@ -153,9 +153,9 @@ namespace LibraryManagementSystem.Controllers
                 {
                     if (!CheckoutHistoryExists(checkoutHistory.Id))
                     {
-                        return NotFound();
+                        return View("~/Views/CheckoutHistories/NotFound.cshtml");
                     }
-                    else
+                else
                     {
                         throw;
                     }
@@ -171,14 +171,14 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/CheckoutHistories/NotFound.cshtml");
             }
 
             var checkoutHistory = await _context.CheckoutHistories.Include(c => c.Book).ThenInclude(b => b.Location).Include(c => c.LibraryCard).FirstOrDefaultAsync(c => c.Id == id);
 
             if (checkoutHistory == null)
             {
-                return NotFound();
+                return View("~/Views/CheckoutHistories/NotFound.cshtml");
             }
 
             var patron = await _context.Patrons.Include(p => p.LibraryCard).FirstOrDefaultAsync(p => p.LibraryCard.Id == checkoutHistory.LibraryCard.Id);

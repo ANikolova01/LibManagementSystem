@@ -10,6 +10,13 @@
 <div>
     <h4>Patron</h4>
     <hr />
+    <div class="row">  
+    <div class="col-md-12">  
+        <div class="form-group">  
+            @Html.Raw(@ViewBag.Alert)  
+        </div>  
+    </div>  
+    </div> 
     <div class="row">
     <div class="alert alert-danger" role="alert">
       <h4 class="alert-heading">Deleting Patron account</h4>
@@ -94,7 +101,7 @@
         {
          <form asp-action="Delete">
             <input type="hidden" asp-for="Id" />
-            <input type="submit" value="Delete" class="btn btn-danger" disabled/> 
+            <input type="submit" value="Delete" class="btn btn-danger" /> 
             <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
         </form>
         }

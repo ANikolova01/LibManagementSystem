@@ -34,14 +34,14 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/Reservations/NotFound.cshtml");
             }
 
             var reservation = await _context.Reservation.Include(c => c.Book).Include(c => c.LibraryCard)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (reservation == null)
             {
-                return NotFound();
+                return View("~/Views/Reservations/NotFound.cshtml");
             }
 
             var patron = await _context.Patrons.Include(p => p.LibraryCard).FirstOrDefaultAsync(p => p.LibraryCard.Id == reservation.LibraryCard.Id);
@@ -219,7 +219,7 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/Reservations/NotFound.cshtml");
             }
 
             var reservation = await _context.Reservation.Include(c => c.Book).Include(c => c.LibraryCard)
@@ -229,7 +229,7 @@ namespace LibraryManagementSystem.Controllers
 
             if (reservation == null)
             {
-                return NotFound();
+                return View("~/Views/Reservations/NotFound.cshtml");
             }
 
             var reservationModel = new ReservationFullModel
@@ -256,7 +256,7 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id != reservationModel.Id)
             {
-                return NotFound();
+                return View("~/Views/Reservations/NotFound.cshtml");
             }
 
             //if (ModelState.IsValid)
@@ -280,7 +280,7 @@ namespace LibraryManagementSystem.Controllers
             {
                 if (!ReservationExists(reservation.Id))
                 {
-                    return NotFound();
+                    return View("~/Views/Reservations/NotFound.cshtml");
                 }
                 else
                 {
@@ -298,7 +298,7 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/Reservations/NotFound.cshtml");
             }
 
             var reservation = await _context.Reservation.Include(c => c.Book).Include(c => c.LibraryCard)
@@ -308,7 +308,7 @@ namespace LibraryManagementSystem.Controllers
 
             if (reservation == null)
             {
-                return NotFound();
+                return View("~/Views/Reservations/NotFound.cshtml");
             }
 
             var reservationModel = new ReservationFullModel

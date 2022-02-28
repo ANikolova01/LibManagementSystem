@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewData["Title"] = "Not Found";
+}
+<div class="page-width">
+<h2 class="header-color delete">Not Found!</h2>
+
+<div>
+    <h4>Library Card</h4>
+    <hr />
+    <div class="row">  
+    <div class="col-md-12">  
+        <div class="form-group">  
+            @Html.Raw(@ViewBag.Alert)  
+        </div>  
+    </div>  
+    </div> 
+    <div class="row">
+    <div class="alert alert-danger" role="alert">
+      <h4 class="alert-heading">Not Found!</h4>
+      <p>The Library Card that you have been looking for has not been found. <strong>Please check with the administrator of the website or the details of the Library Card 
+          in case said account exists, but with a different name or email.</strong>
+      </p>
+      <hr>
+      <p class="mb-0">Make sure to check all the details for the Library Card before further searching for it.</p>
+    </div>
+    </div>
+
+
+    </div>
+</div>

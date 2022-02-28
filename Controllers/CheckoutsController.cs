@@ -52,7 +52,7 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/Checkouts/NotFound.cshtml");
             }
 
             var checkout = await _context.Checkouts.Include(c => c.Book).Include(c => c.LibraryCard)
@@ -72,7 +72,7 @@ namespace LibraryManagementSystem.Controllers
 
             if (checkout == null)
             {
-                return NotFound();
+                return View("~/Views/Checkouts/NotFound.cshtml");
             }
 
             return View(checkoutModel);
@@ -315,7 +315,7 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/Checkouts/NotFound.cshtml");
             }
 
             var checkout = await _context.Checkouts.Include(c => c.Book).Include(c => c.LibraryCard).FirstOrDefaultAsync(m => m.Id == id);
@@ -350,7 +350,7 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/Checkouts/NotFound.cshtml");
             }
 
             var checkout = await _context.Checkouts.Include(c => c.Book).Include(c => c.LibraryCard)
@@ -370,7 +370,7 @@ namespace LibraryManagementSystem.Controllers
 
             if (checkout == null)
             {
-                return NotFound();
+                return View("~/Views/Checkouts/NotFound.cshtml");
             }
             return View(checkoutModel);
         }
@@ -385,7 +385,7 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id != checkoutModel.Id)
             {
-                return NotFound();
+                return View("~/Views/Checkouts/NotFound.cshtml");
             }
 
             Checkout checkout = new Checkout
@@ -406,7 +406,7 @@ namespace LibraryManagementSystem.Controllers
             {
                 if (!CheckoutExists(checkout.Id))
                 {
-                    return NotFound();
+                    return View("~/Views/Checkouts/NotFound.cshtml");
                 }
                 else
                 {
@@ -424,7 +424,7 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/Checkouts/NotFound.cshtml");
             }
 
             var checkout = await _context.Checkouts.Include(c => c.Book).Include(c => c.LibraryCard)
@@ -434,7 +434,7 @@ namespace LibraryManagementSystem.Controllers
 
             if (checkout == null)
             {
-                return NotFound();
+                return View("~/Views/Checkouts/NotFound.cshtml");
             }
             var checkoutModel = new CheckoutFullModel
             {

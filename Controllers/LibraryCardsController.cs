@@ -34,7 +34,7 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/LibraryCards/NotFound.cshtml");
             }
 
             var libraryCard = await _context.LibraryCards
@@ -43,7 +43,7 @@ namespace LibraryManagementSystem.Controllers
            
             if (libraryCard == null)
             {
-                return NotFound();
+                return View("~/Views/LibraryCards/NotFound.cshtml");
             }
             var patron = await _context.Patrons.Include(p => p.LibraryCard).FirstOrDefaultAsync(p => p.LibraryCard.Id == id);
 
@@ -106,13 +106,13 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/LibraryCards/NotFound.cshtml");
             }
 
             var libraryCard = await _context.LibraryCards.FindAsync(id);
             if (libraryCard == null)
             {
-                return NotFound();
+                return View("~/Views/LibraryCards/NotFound.cshtml");
             }
             var patron = await _context.Patrons.Include(p => p.LibraryCard).FirstOrDefaultAsync(p => p.LibraryCard.Id == id);
 
@@ -134,7 +134,7 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id != libraryCardModel.LibraryCard.Id)
             {
-                return NotFound();
+                return View("~/Views/LibraryCards/NotFound.cshtml");
             }
 
             LibraryCard libraryCard = new LibraryCard
@@ -156,9 +156,9 @@ namespace LibraryManagementSystem.Controllers
                 {
                     if (!LibraryCardExists(libraryCard.Id))
                     {
-                        return NotFound();
+                        return View("~/Views/LibraryCards/NotFound.cshtml");
                     }
-                    else
+                else
                     {
                         throw;
                     }
@@ -174,14 +174,14 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/LibraryCards/NotFound.cshtml");
             }
 
             var libraryCard = await _context.LibraryCards
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (libraryCard == null)
             {
-                return NotFound();
+                return View("~/Views/LibraryCards/NotFound.cshtml");
             }
 
             var patron = await _context.Patrons.Include(p => p.LibraryCard).Include(p => p.HomeLibraryBranch).FirstOrDefaultAsync(p => p.LibraryCard.Id == id);

@@ -126,14 +126,14 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/Books/NotFound.cshtml");
             }
 
             var book = await _context.Books.Include(b => b.Location).Include(b => b.AvailabilityStatus)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (book == null)
             {
-                return NotFound();
+                return View("~/Views/Books/NotFound.cshtml");
             }
 
             return View(book);
@@ -172,7 +172,7 @@ namespace LibraryManagementSystem.Controllers
             if(branch == null)
             {
                 ViewBag.ErrorMessage = $"Branch Name = {book.Location.Name} cannot be found";
-                return View("NotFound");
+                return View("~/Views/Books/NotFound.cshtml");
             }
 
             book.Location = branch;
@@ -201,13 +201,13 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/Books/NotFound.cshtml");
             }
 
             var book = await _context.Books.Include(b => b.Location).Include(b => b.AvailabilityStatus).FirstOrDefaultAsync(b => b.Id == id);
             if (book == null)
             {
-                return NotFound();
+                return View("~/Views/Books/NotFound.cshtml");
             }
             return View(book);
         }
@@ -223,7 +223,7 @@ namespace LibraryManagementSystem.Controllers
 
             if (id != book.Id)
             {
-                return NotFound();
+                return View("~/Views/Books/NotFound.cshtml");
             }
             var oldBook = await _context.Books.Include(b => b.Location).Include(b => b.AvailabilityStatus).FirstOrDefaultAsync(b => b.Id == id);
 
@@ -281,11 +281,11 @@ namespace LibraryManagementSystem.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BookExists(book.Id))
+                if (!BookExists(book.Id))
                     {
-                        return NotFound();
+                        return View("~/Views/Books/NotFound.cshtml");
                     }
-                    else
+                else
                     {
                         throw;
                     }
@@ -301,14 +301,14 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/Books/NotFound.cshtml");
             }
 
             var book = await _context.Books.Include(b => b.Location).Include(b => b.AvailabilityStatus)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (book == null)
             {
-                return NotFound();
+                return View("~/Views/Books/NotFound.cshtml");
             }
 
             return View(book);

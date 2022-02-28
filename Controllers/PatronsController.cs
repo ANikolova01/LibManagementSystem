@@ -37,7 +37,7 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/Patrons/NotFound.cshtml");
             }
 
             var patron = await _context.Patrons.Include(p => p.LibraryCard).FirstOrDefaultAsync(m => m.Id == id);
@@ -49,7 +49,7 @@ namespace LibraryManagementSystem.Controllers
                 var reservations = await _context.Reservation.Include(c => c.Book).Include(c => c.LibraryCard).Where(r => r.LibraryCard.Id == patron.LibraryCard.Id).ToListAsync();
                 if (patron == null)
                 {
-                    return NotFound();
+                    return View("~/Views/Patrons/NotFound.cshtml");
                 }
 
                 PatronFullModel patronModel = new PatronFullModel
@@ -84,7 +84,7 @@ namespace LibraryManagementSystem.Controllers
 
             if (user == null)
             {
-                return NotFound();
+                return View("~/Views/Patrons/NotFoundUser.cshtml");
             }
             var patron = await _context.Patrons.Include(p => p.LibraryCard).ThenInclude(l => l.Checkouts).ThenInclude(c => c.Book).FirstOrDefaultAsync(p => p.Email == user.Email);
             var checkoutHistory = await _context.CheckoutHistories.Include(c => c.Book).Include(c => c.LibraryCard).Where(c => c.LibraryCard.Id == patron.LibraryCard.Id).ToListAsync();
@@ -92,7 +92,7 @@ namespace LibraryManagementSystem.Controllers
 
             if (patron == null)
             {
-                return NotFound();
+                return View("~/Views/Patrons/NotFound.cshtml");
             }
 
             PatronFullModel patronModel = new PatronFullModel
@@ -156,13 +156,13 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/Patrons/NotFound.cshtml");
             }
 
             var patron = await _context.Patrons.Include(p => p.HomeLibraryBranch).Include(p => p.LibraryCard).FirstOrDefaultAsync(p => p.Id == id);
             if (patron == null)
             {
-                return NotFound();
+                return View("~/Views/Patrons/NotFound.cshtml");
             }
             return View(patron);
         }
@@ -178,7 +178,7 @@ namespace LibraryManagementSystem.Controllers
             
             if (id != patron.Id)
             {
-                return NotFound();
+                return View("~/Views/Patrons/NotFound.cshtml");
             }
             var patronFound = await _context.Patrons.AsNoTracking().Include(p => p.LibraryCard).FirstOrDefaultAsync(p => p.Id == id);
      //       var branch = patronFound.HomeLibraryBranch;
@@ -228,7 +228,7 @@ namespace LibraryManagementSystem.Controllers
                 {
                     if (!PatronExists(patron.Id))
                     {
-                        return NotFound();
+                      return View("~/Views/Patrons/NotFound.cshtml");
                     }
                     else
                     {
@@ -246,14 +246,21 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/Patrons/NotFound.cshtml");
             }
 
             var patron = await _context.Patrons.Include(p => p.LibraryCard).ThenInclude(l => l.Checkouts)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            var userCheck = await _userManager.FindByEmailAsync(patron.Email);
             if (patron == null)
             {
-                return NotFound();
+                return View("~/Views/Patrons/NotFound.cshtml");
+            }
+            if (userCheck != null)
+            {
+                ViewBag.Alert = CommonServices.ShowAlert(Alerts.Danger, "The patron's user account still exists. Please contact administrator to delete the account before deleting the patron's account!");
+                return View(patron);
             }
 
             return View(patron);
@@ -265,18 +272,22 @@ namespace LibraryManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var patron = await _context.Patrons.Include(p => p.LibraryCard).ThenInclude(l => l.Checkouts).FirstOrDefaultAsync(p => p.Id == id);
-            var libraryCard = await _context.LibraryCards.FirstOrDefaultAsync(l => l.Id == patron.LibraryCard.Id);
-            var checkouts = await _context.Checkouts.Where(c => c.LibraryCard.Id == libraryCard.Id).ToListAsync();
-            var checkoutHistory = await _context.CheckoutHistories.Where(c => c.LibraryCard.Id == libraryCard.Id).ToListAsync();
-            var reservations = await _context.Reservation.Where(c => c.LibraryCard.Id == libraryCard.Id).ToListAsync();
-
+            var patron = await _context.Patrons.Include(p => p.LibraryCard).FirstOrDefaultAsync(p => p.Id == id);
 
             _context.Patrons.Remove(patron);
-            _context.LibraryCards.Remove(libraryCard);
-            _context.Checkouts.RemoveRange(checkouts);
-            _context.CheckoutHistories.RemoveRange(checkoutHistory);
-            _context.Reservation.RemoveRange(reservations);
+
+            if(patron.LibraryCard != null)
+            {
+                var libraryCard = await _context.LibraryCards.FirstOrDefaultAsync(l => l.Id == patron.LibraryCard.Id);
+                var checkouts = await _context.Checkouts.Where(c => c.LibraryCard.Id == libraryCard.Id).ToListAsync();
+                var checkoutHistory = await _context.CheckoutHistories.Where(c => c.LibraryCard.Id == libraryCard.Id).ToListAsync();
+                var reservations = await _context.Reservation.Where(c => c.LibraryCard.Id == libraryCard.Id).ToListAsync();
+
+                _context.LibraryCards.Remove(libraryCard);
+                _context.Checkouts.RemoveRange(checkouts);
+                _context.CheckoutHistories.RemoveRange(checkoutHistory);
+                _context.Reservation.RemoveRange(reservations);
+            }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

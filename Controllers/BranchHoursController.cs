@@ -33,14 +33,14 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/BranchHours/NotFound.cshtml");
             }
 
             var branchHours = await _context.BranchHours.Include(h => h.Branch)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (branchHours == null)
             {
-                return NotFound();
+                return View("~/Views/BranchHours/NotFound.cshtml");
             }
 
             return View(branchHours);
@@ -79,13 +79,13 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/BranchHours/NotFound.cshtml");
             }
 
             var branchHours = await _context.BranchHours.Include(h => h.Branch).FirstOrDefaultAsync(h => h.Id == id);
             if (branchHours == null)
             {
-                return NotFound();
+                return View("~/Views/BranchHours/NotFound.cshtml");
             }
             return View(branchHours);
         }
@@ -100,7 +100,7 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id != branchHours.Id)
             {
-                return NotFound();
+                return View("~/Views/BranchHours/NotFound.cshtml");
             }
 
             if (ModelState.IsValid)
@@ -114,7 +114,7 @@ namespace LibraryManagementSystem.Controllers
                 {
                     if (!BranchHoursExists(branchHours.Id))
                     {
-                        return NotFound();
+                        return View("~/Views/BranchHours/NotFound.cshtml");
                     }
                     else
                     {
@@ -132,14 +132,14 @@ namespace LibraryManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("~/Views/BranchHours/NotFound.cshtml");
             }
 
             var branchHours = await _context.BranchHours.Include(h => h.Branch)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (branchHours == null)
             {
-                return NotFound();
+                return View("~/Views/BranchHours/NotFound.cshtml");
             }
 
             return View(branchHours);
